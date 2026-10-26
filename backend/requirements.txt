@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+requests
+beautifulsoup4
+nltk
+httpx
+spacy
+sentence-transformers
+scikit-learn
+python-multipart
+pdfplumber
+python-docx
+chromadb
+numpy

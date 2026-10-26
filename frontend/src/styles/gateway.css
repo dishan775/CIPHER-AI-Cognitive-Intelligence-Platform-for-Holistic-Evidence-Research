@@ -1,0 +1,52 @@
+/* Gateway Styles */
+.gateway-container {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at center, var(--black-surface), var(--black-deep));
+    z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.modal-content {
+    background: var(--black-surface);
+    padding: 3rem;
+    border: 1px solid var(--gold-dim);
+    border-radius: 4px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(212, 160, 23, 0.1);
+}
+
+.modal-content h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold-pure);
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--white-ghost);
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.gold-link {
+    color: var(--gold-pure);
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.gold-link:hover {
+    color: var(--gold-light);
+    text-decoration: underline;
+}
+
+.modal-content input {
+    width: 100%;
+}

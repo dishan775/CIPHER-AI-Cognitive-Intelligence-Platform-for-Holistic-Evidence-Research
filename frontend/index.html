@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIPHER — Agentic Intelligence That Executes</title>
+  <meta name="description" content="Cipher is a voice-first agentic AI built for people who want an AI that acts. Browse live content, reason through complex tasks, fill forms, compare options, and run workflows — end to end.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════
+   CIPHER LANDING — COLOR SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:            #FFF6CD;
+  --surface:       #F5F0E8;
+  --surface-inset: #FFFFFF;
+
+  --accent:        #C0152A;
+  --accent-dim:    #8B0000;
+  --accent-glow:   rgba(192,21,42,0.15);
+
+  --gold:          #BC7B26;
+  --gold-light:    #D49A55;
+  --gold-dim:      rgba(188,123,38,0.20);
+
+  --text-primary:  #2F0909;
+  --text-secondary:#613325;
+  --text-dim:      #9B6D52;
+
+  --border:        rgba(47,9,9,0.1);
+  --border-accent: rgba(192,21,42,0.30);
+  --border-gold:   rgba(188,123,38,0.25);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESET & BASE
+   ══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── Typography Classes ─────────────────────────────────────── */
+.serif        { font-family: 'Instrument Serif', Georgia, serif; }
+.serif-italic { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; }
+.sans         { font-family: 'Inter', system-ui, sans-serif; }
+.mono         { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Shared Components ──────────────────────────────────────── */
+.hairline     { border: 0.5px solid var(--border); }
+.hairline-top { border-top: 0.5px solid var(--border); }
+.hairline-bot { border-bottom: 0.5px solid var(--border); }
+
+.btn {
+  height: 48px;
+  padding: 0 1.5rem;
+  border-radius: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn:active {
+  transform: scale(0.95);
+}
+.btn-primary {
+  background: var(--text-primary);
+  color: #FFF6CD;
+}
+.btn-primary:hover { 
+  background: #2F0909; 
+  box-shadow: 0 0 15px rgba(47,9,9,0.4);
+}
+.btn-secondary {
+  background: transparent;
+  border: 0.5px solid var(--border);
+  color: var(--text-primary);
+}
+.btn-secondary:hover { 
+  border-color: rgba(47,9,9,0.7); 
+  background: rgba(47,9,9,0.05);
+}
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+}
+.btn-ghost:hover { 
+  color: var(--text-primary); 
+}
+.btn-arrow::after { 
+  content: ' →'; 
+  transition: transform 0.2s ease;
+}
+.btn-arrow:hover::after {
+  transform: translateX(4px);
+}
+
+/* ── Scroll Reveal Classes ──────────────────────────────────── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+.chip-accent { border-color: var(--border-accent); color: var(--accent); }
+.chip-gold   { border-color: var(--border-gold);   color: var(--gold);   }
+
+.dot-accent {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.accent-text { color: var(--accent); }
+.gold-text   { color: var(--gold); }
+.body-sm {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 0.5rem;
+}
+
+.section-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 7rem 2rem;
+}
+
+.code-panel {
+  background: var(--surface-inset);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+.code-panel pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: pre;
+}
+.code-panel .kw  { color: var(--accent); }
+.code-panel .str { color: var(--gold); }
+.code-panel .cm  { color: var(--text-dim); }
+.code-panel .fn  { color: var(--text-primary); }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 1 — NAV
+   ══════════════════════════════════════════════════════════════ */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 56px;
+  background: rgba(255,246,205,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-dot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 2px);
+  grid-template-rows: repeat(4, 2px);
+  gap: 2px;
+}
+.nav-dot-grid span {
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.nav-wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  letter-spacing: 0.12em;
+}
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.nav-center a {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  transition: color 0.15s ease;
+}
+.nav-center a:hover { color: var(--text-primary); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.nav-right .btn { height: 36px; font-size: 0.78rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 2 — HERO (IMMERSIVE AGENT UNIVERSE)
+   ══════════════════════════════════════════════════════════════ */
+.hero {
+  background: var(--bg);
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Canvas fills the entire hero background */
+#ascii-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  z-index: 0;
+  opacity: 0.25; /* Subtle background effect on cream */
+}
+#cipher-3d {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  z-index: 1;
+}
+
+/* Gradient overlays for text readability */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(255,246,205,0.7) 100%),
+    linear-gradient(180deg, rgba(255,246,205,0.5) 0%, transparent 15%, transparent 85%, rgba(255,246,205,0.8) 100%);
+}
+
+/* Scanline overlay for cinematic feel */
+.hero-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 3px,
+    rgba(47,9,9,0.008) 3px,
+    rgba(47,9,9,0.008) 4px
+  );
+}
+
+/* Content floats above everything */
+.hero-content-layer {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-left {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-fade 0.8s ease forwards 0.3s;
+  max-width: 720px;
+}
+@keyframes hero-fade {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-chips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: hero-fade 0.6s ease forwards 0.1s;
+}
+.hero-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  color: var(--text-primary);
+  line-height: 1.05;
+  font-weight: 400;
+  text-shadow: 0 1px 8px rgba(255,246,205,0.8);
+}
+.hero-headline i {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  background: linear-gradient(135deg, #1A0505, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 6px rgba(255,246,205,0.6));
+}
+.hero-body {
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 2rem auto 0;
+  text-shadow: 0 0 12px rgba(255,246,205,0.9);
+}
+.hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+  justify-content: center;
+  opacity: 0;
+  animation: hero-fade 0.6s ease forwards 0.6s;
+}
+.hero-tags {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  letter-spacing: 0.1em;
+  margin-top: 2rem;
+  opacity: 0;
+  animation: hero-fade 0.6s ease forwards 0.8s;
+  text-shadow: 0 0 10px rgba(255,246,205,0.9);
+}
+
+/* Scene label — bottom center of hero */
+.scene-label {
+  position: absolute;
+  bottom: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(255,246,205,0.6);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Stats bar floating at bottom of hero */
+.hero-stats-bar {
+  position: relative;
+  z-index: 10;
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  background: rgba(255,246,205,0.75);
+  border: 0.5px solid rgba(47,9,9,0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  animation: hero-fade 0.6s ease forwards 1s;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.hero-stat-num.accent { color: var(--accent); }
+.hero-stat-num.gold { color: var(--gold); }
+.hero-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.68rem;
+  color: var(--text-primary);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+/* Trusted row */
+.trusted-row {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.trusted-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.trusted-logos {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.trusted-logos span {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 3 — VOCABULARY
+   ══════════════════════════════════════════════════════════════ */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: start;
+  gap: 4rem;
+}
+.vocab-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  color: var(--text-primary);
+  line-height: 1.2;
+  font-weight: 400;
+}
+.vocab-headline i { font-style: italic; }
+.vocab-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 3rem;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.v-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0) scale(1);
+}
+/* Sweep-fill gradient on hover */
+.v-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(192,21,42,0.08) 0%, rgba(188,123,38,0.06) 50%, rgba(192,21,42,0.04) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+/* Shimmer line */
+.v-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: none;
+  pointer-events: none;
+  z-index: 1;
+}
+.v-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(192,21,42,0.1), 0 4px 12px rgba(0,0,0,0.06);
+}
+.v-card:hover::before {
+  opacity: 1;
+}
+.v-card:hover::after {
+  animation: card-shimmer 0.8s ease forwards;
+}
+@keyframes card-shimmer {
+  0%   { left: -100%; }
+  100% { left: 120%; }
+}
+.v-card > * { position: relative; z-index: 2; }
+.v-card-icon {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.v-card:hover .v-card-icon {
+  color: var(--accent);
+  transform: scale(1.3) rotate(-8deg);
+}
+.v-card-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+  transition: color 0.3s ease;
+}
+.v-card:hover .v-card-title {
+  color: var(--accent);
+}
+.v-card-body {
+  font-weight: 300;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  transition: color 0.3s ease;
+}
+.v-card:hover .v-card-body {
+  color: var(--text-primary);
+}
+.v-card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 0.75rem;
+  transition: color 0.3s ease;
+}
+.v-card:hover .v-card-meta {
+  color: var(--gold);
+}
+/* Staggered entrance for cards grid */
+.cards-grid .v-card:nth-child(1) { transition-delay: 0s; }
+.cards-grid .v-card:nth-child(2) { transition-delay: 0.06s; }
+.cards-grid .v-card:nth-child(3) { transition-delay: 0.12s; }
+.cards-grid .v-card:nth-child(4) { transition-delay: 0.18s; }
+.cards-grid .v-card:nth-child(5) { transition-delay: 0.24s; }
+.cards-grid .v-card:nth-child(6) { transition-delay: 0.30s; }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 4 — SIGNATURE
+   ══════════════════════════════════════════════════════════════ */
+.sig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Atmosphere Card */
+.atm-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.atm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.atm-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.medallion-wrap {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background: radial-gradient(
+    ellipse 75% 75% at 50% 50%,
+    rgba(30,20,20,0.95) 0%,
+    rgba(10,8,8,0.98) 55%,
+    #080808 100%
+  );
+  border-radius: 12px;
+  border: 0.5px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.medallion {
+  width: 280px;
+  height: 280px;
+  position: relative;
+}
+.medallion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(240,237,232,0.55) 1px,
+    transparent 1px
+  );
+  background-size: 11px 11px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    black 0%, black 35%, transparent 72%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    black 0%, black 35%, transparent 72%
+  );
+}
+.medallion::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(192,21,42,0.08) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+.atm-card-footer {
+  padding: 1rem 0.5rem 0.5rem;
+}
+.atm-card-footer .serif-italic {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* Spec Panels */
+.spec-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.spec-panel {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.spec-panel::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, rgba(188,123,38,0.12), transparent);
+  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+.spec-panel:hover {
+  border-color: var(--border-gold);
+  transform: translateX(6px);
+  box-shadow: -4px 0 20px rgba(188,123,38,0.08);
+}
+.spec-panel:hover::before {
+  width: 100%;
+}
+.spec-panel:hover .spec-title {
+  color: var(--gold);
+}
+.spec-panel:hover .spec-sub {
+  color: var(--gold);
+}
+.spec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.spec-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  position: relative; z-index: 1;
+}
+.spec-sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  position: relative; z-index: 1;
+}
+.palette-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+}
+.swatch {
+  width: 36px; height: 36px;
+  border-radius: 4px;
+  border: 0.5px solid var(--border);
+}
+.type-display {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.type-aa {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+}
+.type-eclat {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.type-families {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.pill-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 5 — TERMINAL
+   ══════════════════════════════════════════════════════════════ */
+.terminal-section {
+  padding: 5rem 2rem;
+}
+.terminal-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.terminal-tabs {
+  height: 40px;
+  background: var(--surface-inset);
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: stretch;
+}
+.terminal-tab {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+.terminal-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+.terminal-tab-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 1.25rem;
+}
+.terminal-body {
+  padding: 1.5rem 2rem;
+  max-height: 460px;
+  overflow: hidden;
+  position: relative;
+}
+.terminal-body pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre;
+  margin: 0;
+  animation: scroll-up 20s linear infinite;
+}
+.terminal-content { display: block; }
+.terminal-content.hidden { display: none; }
+.terminal-body .step-done { color: var(--gold); }
+.terminal-body .step-active { color: var(--accent); }
+.terminal-body .verdict-line { color: var(--gold); }
+
+@keyframes scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-40px); }
+}
+
+/* Stats row */
+.stats-row {
+  max-width: 1100px;
+  margin: 3rem auto 0;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+  padding: 0 2rem;
+}
+.stat-hero-num {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 900;
+  font-size: 3rem;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.stat-hero-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+.stat-item-num {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--text-primary);
+  line-height: 1;
+}
+.stat-item-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 6 — PLATFORM
+   ══════════════════════════════════════════════════════════════ */
+.platform-grid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 4rem;
+  align-items: start;
+}
+.platform-eyebrow {
+  margin-bottom: 1rem;
+}
+.platform-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  color: var(--text-primary);
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+.platform-headline i { font-style: italic; }
+.platform-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+.platform-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+.platform-link:hover { text-decoration: underline; }
+.feature-block {
+  border-top: 0.5px solid var(--border);
+  padding: 2rem 0;
+}
+.feature-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+.feature-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.feature-body {
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+.feature-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 7 — BENCHMARK
+   ══════════════════════════════════════════════════════════════ */
+.bench-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.bench-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.bench-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 3rem;
+  max-width: 500px;
+}
+.bench-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.bench-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bench-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  width: 160px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.bench-bar-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bench-bar {
+  height: 36px;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  width: 0%;
+}
+.bench-bar.cipher { background: var(--accent); }
+.bench-bar.other {
+  background: var(--surface-inset);
+  border: 0.5px solid var(--border);
+}
+.bench-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.bench-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 1.5rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 8 — SECURITY
+   ══════════════════════════════════════════════════════════════ */
+.security-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.sec-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.sec-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+.sec-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+.sec-feature-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.sec-feature-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+.sec-feature-desc {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Isolation Diagram */
+.iso-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.iso-box {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  padding: 1rem 2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  text-align: center;
+  width: 260px;
+  border-radius: 4px;
+}
+.iso-box.active { border-color: var(--accent); }
+.iso-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  height: 40px;
+}
+.iso-line {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+}
+.iso-label {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 9 — MODULE TABLE
+   ══════════════════════════════════════════════════════════════ */
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.module-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+.module-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 2rem;
+}
+.module-tab {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+.module-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+.module-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.module-table th {
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  padding: 0.75rem 1rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.module-table td {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  padding: 1rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.module-table td.dim { color: var(--text-secondary); }
+.module-table .btn-launch {
+  height: 28px;
+  font-size: 0.72rem;
+  padding: 0 1rem;
+  border-radius: 14px;
+  background: var(--text-primary);
+  color: #FFF6CD;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+.module-table .btn-launch:hover { background: #2F0909; }
+.module-note {
+  margin-top: 1.5rem;
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 10 — CODE
+   ══════════════════════════════════════════════════════════════ */
+.code-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.code-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.code-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+.code-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.code-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.code-tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 0;
+}
+.code-tab {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+}
+.code-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+.code-right { position: relative; }
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 11 — PROOF CARDS
+   ══════════════════════════════════════════════════════════════ */
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.proof-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0);
+}
+/* Gold accent fill from bottom */
+.proof-card::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 0;
+  background: linear-gradient(0deg, rgba(188,123,38,0.1) 0%, rgba(188,123,38,0.04) 60%, transparent 100%);
+  transition: height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+/* Top accent line that expands */
+.proof-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.proof-card:hover {
+  border-color: var(--border-gold);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(188,123,38,0.12), 0 8px 20px rgba(0,0,0,0.06);
+}
+.proof-card:hover::before {
+  height: 100%;
+}
+.proof-card:hover::after {
+  width: 100%;
+}
+.proof-card .chip { margin-bottom: 1rem; position: relative; z-index: 1; }
+.proof-card-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  position: relative; z-index: 1;
+  transition: color 0.3s ease;
+}
+.proof-card:hover .proof-card-title {
+  color: var(--accent);
+}
+.proof-card-body {
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  position: relative; z-index: 1;
+  transition: color 0.3s ease;
+}
+.proof-card:hover .proof-card-body {
+  color: var(--text-primary);
+}
+.proof-card-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  position: relative; z-index: 1;
+  transition: all 0.3s ease;
+}
+.proof-card:hover .proof-card-link {
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+.proof-card-link:hover { text-decoration: underline; }
+/* Staggered proof cards */
+.proof-grid .proof-card:nth-child(1) { transition-delay: 0s; }
+.proof-grid .proof-card:nth-child(2) { transition-delay: 0.08s; }
+.proof-grid .proof-card:nth-child(3) { transition-delay: 0.16s; }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 12 — FINAL CTA
+   ══════════════════════════════════════════════════════════════ */
+.final-cta {
+  background: var(--surface);
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+.final-cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.final-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 1rem 0;
+  line-height: 1.2;
+}
+.final-headline i { font-style: italic; }
+.final-body {
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.75rem;
+}
+.final-ctas {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 13 — FOOTER
+   ══════════════════════════════════════════════════════════════ */
+.site-footer {
+  border-top: 0.5px solid var(--border);
+  padding: 3rem 2rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.footer-brand-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.footer-brand-addr {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.footer-brand-social {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.footer-col-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+.footer-col a {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  transition: color 0.15s ease;
+}
+.footer-col a:hover { color: var(--text-primary); }
+.footer-bottom {
+  border-top: 0.5px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-legal a {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  transition: color 0.15s ease;
+}
+.footer-legal a:hover { color: var(--text-secondary); }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION 2.5 — CONSTRAINTS (DITHER/ENGRAVING)
+   ══════════════════════════════════════════════════════════════ */
+.constraints-section {
+  background: #FFF6CD;
+  border-top: 2px solid var(--accent);
+  padding-bottom: 5rem;
+}
+.constraints-banner {
+  width: 100%;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--accent), var(--accent) 2px, transparent 2px, transparent 4px);
+  margin-bottom: 4px;
+}
+.constraints-banner.thin {
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--accent), var(--accent) 1px, transparent 1px, transparent 3px);
+  margin-bottom: 0;
+}
+.constraints-image {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(192,21,42,0.3);
+}
+.constraints-content {
+  max-width: 1000px;
+  margin: 4rem auto 0;
+  padding: 0 2rem;
+}
+.constraints-headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+.constraints-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 500px;
+  margin-bottom: 4rem;
+}
+.constraints-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.constraint-card {
+  background: var(--surface);
+  border: 1px solid rgba(192,21,42,0.2);
+  border-top: 2px solid var(--accent);
+  padding: 2.5rem 2rem;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0);
+}
+/* Deep crimson fill from top */
+.constraint-card::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 0;
+  background: linear-gradient(180deg, rgba(192,21,42,0.12) 0%, rgba(192,21,42,0.04) 50%, transparent 100%);
+  transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+/* Animated border glow */
+.constraint-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent));
+  background-size: 300% 300%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: border-glow-shift 4s ease infinite;
+}
+@keyframes border-glow-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.constraint-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(192,21,42,0.15), 0 8px 20px rgba(0,0,0,0.08);
+  border-color: transparent;
+}
+.constraint-card:hover::before {
+  height: 100%;
+}
+.constraint-card:hover::after {
+  opacity: 1;
+}
+.constraint-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  position: relative; z-index: 1;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.constraint-card:hover .constraint-title {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+.constraint-desc {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  position: relative; z-index: 1;
+  transition: color 0.3s ease;
+}
+.constraint-card:hover .constraint-desc {
+  color: var(--text-primary);
+}
+/* Staggered constraint cards */
+.constraints-grid .constraint-card:nth-child(1) { transition-delay: 0s; }
+.constraints-grid .constraint-card:nth-child(2) { transition-delay: 0.1s; }
+.constraints-grid .constraint-card:nth-child(3) { transition-delay: 0.2s; }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-content-layer { padding: 6rem 1.5rem 3rem; }
+  .hero-headline { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+  .hero-stats-bar { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .constraints-grid { grid-template-columns: 1fr; }
+  .constraints-image { height: 250px; }
+  .vocab-grid      { grid-template-columns: 1fr; }
+  .cards-grid      { grid-template-columns: 1fr 1fr; }
+  .sig-grid        { grid-template-columns: 1fr; }
+  .stats-row       { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .platform-grid   { grid-template-columns: 1fr; }
+  .security-grid   { grid-template-columns: 1fr; }
+  .code-grid       { grid-template-columns: 1fr; }
+  .proof-grid      { grid-template-columns: 1fr; }
+  .footer-top      { grid-template-columns: 1fr 1fr; }
+  .nav-center      { display: none; }
+  .module-table     { display: block; overflow-x: auto; }
+  .trusted-row     { flex-direction: column; gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .cards-grid  { grid-template-columns: 1fr; }
+  .footer-top  { grid-template-columns: 1fr; }
+  .stats-row   { grid-template-columns: 1fr; }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-left, .hero-chips, .hero-ctas, .hero-tags, .hero-stats-bar { animation: none; opacity: 1; transform: none; }
+  .terminal-body pre { animation: none; }
+  .bench-bar { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1 — NAV
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="site-nav">
+  <div class="nav-left">
+    <div class="nav-dot-grid">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <span class="nav-wordmark">CIPHER</span>
+  </div>
+  <div class="nav-center">
+    <a href="#platform">Platform</a>
+    <a href="#modules">Agents</a>
+    <a href="#benchmark">Benchmarks</a>
+    <a href="#security">Security</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="window.location.href='/dashboard.html'">Log in</button>
+    <a href="/dashboard.html" class="btn btn-primary btn-arrow" style="height:36px;font-size:0.78rem;">Get started</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2 — HERO
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero-universe">
+  <!-- ASCII Canvas — behind the 3D canvas -->
+  <canvas id="ascii-bg"></canvas>
+
+  <!-- 3D Canvas — fills entire hero background -->
+  <canvas id="cipher-3d"></canvas>
+  
+  <!-- Cinematic overlays -->
+  <div class="hero-vignette"></div>
+  <div class="hero-scanlines"></div>
+  
+  <!-- Scene label -->
+  <div class="scene-label">
+    <span class="dot-accent"></span>
+    <span class="label sans">CIPHER AGENT UNIVERSE · LIVE</span>
+  </div>
+  
+  <!-- Content floating above the universe -->
+  <div class="hero-content-layer">
+    <div class="hero-left">
+
+      <h1 class="hero-headline">
+        Agentic intelligence,<br>
+        <i>that executes.</i>
+      </h1>
+      <p class="hero-body">
+        Cipher is a voice-first agentic AI built for people who want an AI
+        that acts. Browse live content, reason through complex tasks, fill
+        forms, compare options, and run workflows — end to end.
+      </p>
+      <div class="hero-ctas">
+        <a href="/dashboard.html" class="btn btn-primary btn-arrow">Start building</a>
+        <button class="btn btn-secondary">▷ Watch the demo</button>
+      </div>
+      <p class="hero-tags">VOICE-FIRST &nbsp;· &nbsp;MULTI-STEP AGENT &nbsp;· &nbsp;ZERO SETUP</p>
+    </div>
+    
+    <div class="hero-stats-bar">
+      <div class="hero-stat">
+        <div class="hero-stat-num accent">454</div>
+        <div class="hero-stat-label">TASKS / SECOND</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">AGENT MODULES</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num gold">2.7×</div>
+        <div class="hero-stat-label">FASTER THAN #2</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">DATA RETAINED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trusted-row">
+  <span class="trusted-label">IN PRODUCTION AT</span>
+  <div class="trusted-logos">
+    <span>Modelence</span>
+    <span>Strata Labs</span>
+    <span>Quietfield</span>
+    <span>Atelier 7</span>
+    <span>Nightline</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2.5 — CONSTRAINTS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="constraints-section">
+  <!-- Dithered Banner -->
+  <div class="constraints-banner"></div>
+  <div class="constraints-banner thin"></div>
+  
+  <!-- Generated Engraving Hero Image -->
+  <img src="/hero-engraving.jpg" alt="Agent OS engraving" class="constraints-image">
+  
+  <div class="constraints-content">
+    <h2 class="constraints-headline">Autonomy, enforced<br>at runtime.</h2>
+    <p class="constraints-body">
+      Cipher evaluates constraints and context dynamically. It treats ambiguous instructions as reasoning steps, not as hard failures.
+    </p>
+    
+    <div class="constraints-grid">
+      <div class="constraint-card">
+        <div class="constraint-title">Action lock</div>
+        <div class="constraint-desc">
+          Pin an agent to an exact action space. Anything outside the scope is caught before execution, ensuring the output and intent agree.
+        </div>
+      </div>
+      <div class="constraint-card">
+        <div class="constraint-title">Dynamic reasoning</div>
+        <div class="constraint-desc">
+          Tasks resolve to an execution graph before they ever reach the target API. The sequence is evaluated dynamically based on context.
+        </div>
+      </div>
+      <div class="constraint-card">
+        <div class="constraint-title">Token budgets</div>
+        <div class="constraint-desc">
+          Every agent carries a hard context ceiling. A task that crosses it fails loudly instead of burning resources on a truncated prompt.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3 — VOCABULARY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top">
+  <div class="section-wrap">
+    <div class="vocab-grid">
+      <div class="reveal-up">
+        <h2 class="vocab-headline">A small vocabulary<br><i>that executes a lot.</i></h2>
+      </div>
+      <div class="reveal-up reveal-delay-1">
+        <p class="vocab-body">Three modes, one intent, one action language. Every command shares the same restraint so complex workflows never feel busy and simple commands never feel empty.</p>
+      </div>
+    </div>
+    <div class="cards-grid" style="grid-column: 1 / -1; margin-top: 3rem;">
+      <div class="v-card reveal-up">
+        <div class="v-card-icon">◎</div>
+        <div class="v-card-title">Three agent modes</div>
+        <div class="v-card-body">Voice, text, and autonomous workflow. Each mode shares the same intent layer.</div>
+        <div class="v-card-meta">voice · text · auto</div>
+      </div>
+      <div class="v-card reveal-up reveal-delay-1">
+        <div class="v-card-icon">—</div>
+        <div class="v-card-title">Hairline precision</div>
+        <div class="v-card-body">Every divider is a single pixel. Emphasis lives in action, not decoration.</div>
+        <div class="v-card-meta">0.5px · no shadows</div>
+      </div>
+      <div class="v-card reveal-up reveal-delay-2">
+
+        <div class="v-card-icon">◈</div>
+        <div class="v-card-title">One red accent</div>
+        <div class="v-card-body">A single cipher-red token powers every primary action, focus ring, and active state.</div>
+        <div class="v-card-meta">--cipher-red  #C0152A</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card-icon">T</div>
+        <div class="v-card-title">Serif meets grotesk</div>
+        <div class="v-card-body">Instrument Serif sets editorial presence. Inter handles every dense task UI.</div>
+        <div class="v-card-meta">editorial · functional</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card-icon">◎</div>
+        <div class="v-card-title">Atmosphere medallion</div>
+        <div class="v-card-body">A dot grid masked into a radial vellum shape. One per page. Single source of identity.</div>
+        <div class="v-card-meta">Signature · once per page</div>
+      </div>
+      <div class="v-card">
+        <div class="v-card-icon">S</div>
+        <div class="v-card-title">Accessible by default</div>
+        <div class="v-card-body">Primary type clears WCAG AA at 19:1. Focus rings and motion-reduced behavior ship in the base layer.</div>
+        <div class="v-card-meta">WCAG AA · 19:1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4 — SYSTEM ARCHITECTURE (ABOUT CIPHER)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top" id="about">
+  <div class="section-wrap">
+    <div class="sig-grid">
+      <div>
+        <div class="atm-card" style="width: 100%;">
+          <div class="atm-card-header">
+            <div class="atm-card-header-left">
+              <span class="dot-accent"></span>
+              <span class="label sans">SYSTEM ARCHITECTURE</span>
+            </div>
+          </div>
+          <div class="medallion-wrap" style="height: 280px; flex-direction: column; align-items: flex-start; padding: 2.5rem; background: var(--surface-inset); justify-content: center;">
+             <h3 class="serif" style="font-size: 2.4rem; color: var(--text-primary); margin-bottom: 1rem; line-height: 1.1;">Beyond Chat</h3>
+             <p class="sans" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Most AI stops at text generation. Cipher is an <strong style="color:var(--text-primary);font-weight:500;">agentic operating system</strong> built to interact with the world.</p>
+             <p class="sans" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-top: 1rem;">It navigates the web, reads documentation, fills forms, and orchestrates complex multi-step workflows autonomously.</p>
+          </div>
+          <div class="atm-card-footer" style="padding-top: 1.5rem;">
+            <p class="serif-italic" style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.5rem;">A new paradigm for AI interaction.</p>
+            <p class="body-sm sans">Fully integrated into a single-page application. No desktop app required.</p>
+          </div>
+        </div>
+      </div>
+      <div class="spec-stack">
+        <div class="spec-panel">
+          <div class="spec-header">
+            <span class="spec-title">Live Web Intelligence</span>
+            <span class="spec-sub">Real-time</span>
+          </div>
+          <p class="body-sm sans" style="margin-top:0; font-size: 0.85rem;">Cipher breaks out of the training window. It actively browses websites, reads live documentation, and extracts structured data from the internet to ground its reasoning.</p>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-header">
+            <span class="spec-title">Action Execution</span>
+            <span class="spec-sub">Modular</span>
+          </div>
+          <p class="body-sm sans" style="margin-top:0; font-size: 0.85rem;">Words become actions. Whether it's booking a ticket, compiling a CSV, or comparing products, Cipher's modular toolkit translates your intent into concrete results.</p>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-header">
+            <span class="spec-title">Privacy First</span>
+            <span class="spec-sub">Edge</span>
+          </div>
+          <p class="body-sm sans" style="margin-top:0; font-size: 0.85rem;">Your data stays yours. API keys and session contexts are managed locally. Cipher connects directly to models without middleman telemetry or hidden retention policies.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5 — TERMINAL
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top terminal-section">
+  <div class="terminal-wrap">
+    <div class="terminal-tabs">
+      <button class="terminal-tab active" data-tab="client">CLIENT · DECRYPTED ⌘1</button>
+      <button class="terminal-tab" data-tab="wire">WIRE · ENCRYPTED ⌘2</button>
+      <div class="terminal-tab-right">
+        <span class="chip chip-gold"><span class="mono">454 t/s</span></span>
+        <span class="chip">CIPHER CORE · #1 ON BENCHMARK</span>
+      </div>
+    </div>
+    <div class="terminal-body">
+      <pre class="terminal-content" id="tab-client">
+cipher agent 1.0.2 | local embedded | agent main
+
+> task received: <span class="str">"research best budget laptops under ₹50,000 for CS student"</span>
+
+<span class="step-done">STEP 1/5</span>  Parsing intent...                              <span class="step-done">✓ 0.2s</span>
+<span class="step-done">STEP 2/5</span>  Searching product databases...                 <span class="step-done">✓ 1.1s</span>
+<span class="step-done">STEP 3/5</span>  Extracting specs for top 3 candidates...       <span class="step-done">✓ 0.8s</span>
+<span class="step-done">STEP 4/5</span>  Running comparison matrix...                   <span class="step-done">✓ 0.4s</span>
+<span class="step-done">STEP 5/5</span>  Generating recommendation...                   <span class="step-done">✓ 0.6s</span>
+
+<span class="verdict-line">── CIPHER'S VERDICT ──────────────────────────────────────────</span>
+Best pick:    ASUS Vivobook 15 (Ryzen 5 7520U, 16GB, 512GB)
+Price:        <span class="str">₹46,990</span>
+Reason:       Highest performance-per-rupee in segment.
+              8-core Zen4c, fastest iGPU for ML workloads,
+              16GB RAM soldered but sufficient for dev use.
+Runner-up:    Lenovo IdeaPad Slim 3 · <span class="str">₹43,990</span>
+Avoid:        HP 15s (thermal throttling confirmed in 3 tests)
+
+local ready | idle
+agent main | session <span class="kw">cipher-9a4b2c</span> | tokens 4.2k/128k (3%)</pre>
+      <pre class="terminal-content hidden" id="tab-wire">
+<span class="cm">// CIPHER Wire Protocol — Encrypted Agent Stream</span>
+<span class="cm">// https://api.cipher.ai/enc/agent/task_stream</span>
+
+{
+  <span class="kw">"nonce"</span>: <span class="str">"a4f29bc71d3e8904"</span>,
+  <span class="kw">"iv"</span>: <span class="str">"0x8B4A2F19C3D7E601"</span>,
+  <span class="kw">"ciphertext"</span>: <span class="str">"U2FsdGVkX1+7xQzV...mK4R9nPb3wYt="</span>,
+  <span class="kw">"signature"</span>: <span class="str">"ed25519:Zy9mN4xL...pQ7sRvW3dFh"</span>,
+  <span class="kw">"timestamp"</span>: <span class="str">"2026-09-14T10:42:18.004Z"</span>,
+  <span class="kw">"session_id"</span>: <span class="str">"cipher-9a4b2c"</span>
+}
+
+{
+  <span class="kw">"nonce"</span>: <span class="str">"c7e31af094b25d18"</span>,
+  <span class="kw">"iv"</span>: <span class="str">"0x2D9F7A43E1B60C85"</span>,
+  <span class="kw">"ciphertext"</span>: <span class="str">"U2FsdGVkX1+Qw8jN...hL2kT5vRy9xA="</span>,
+  <span class="kw">"signature"</span>: <span class="str">"ed25519:Hk3pM8wR...jV6nBcY2aXq"</span>,
+  <span class="kw">"agent_module"</span>: <span class="str">"browse"</span>,
+  <span class="kw">"step"</span>: <span class="str">"2/5"</span>
+}
+
+<span class="cm">// Stream complete — 5 encrypted chunks delivered</span>
+<span class="cm">// Total wire time: 3.1s | Overhead: 0.04s</span></pre>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div>
+      <div class="stat-hero-num">454 t/s</div>
+      <div class="stat-hero-label">CIPHER CORE · #1 ON ARTIFICIAL ANALYSIS</div>
+    </div>
+    <div>
+      <div class="stat-item-num">0</div>
+      <div class="stat-item-label">DATA RETENTION · ENFORCED AT THE GATEWAY</div>
+    </div>
+    <div>
+      <div class="stat-item-num">2.7×</div>
+      <div class="stat-item-label">LOWER LATENCY THAN THE #2 AGENT PLATFORM</div>
+    </div>
+    <div>
+      <div class="stat-item-num">8</div>
+      <div class="stat-item-label">AGENT MODULES · ONE VOICE COMMAND, ONE BILL</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 6 — PLATFORM
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top" id="platform">
+  <div class="section-wrap">
+    <div class="platform-grid">
+      <div>
+        <div class="platform-eyebrow"><span class="chip">THE PLATFORM</span></div>
+        <h2 class="platform-headline">Fastest and most capable <i>agent engine</i></h2>
+        <p class="platform-body">One runtime for every agent task. Voice, text, and autonomous modes share the same intent layer, the same reasoning chain, the same execution pipeline.</p>
+        <a href="#" class="platform-link">VIEW DOCS →</a>
+      </div>
+      <div>
+        <div class="feature-block">
+          <div class="feature-num">01</div>
+          <div class="feature-title">Voice Agent Core</div>
+          <p class="feature-body">Cipher listens in real time. One wake phrase activates the full pipeline — intent detection, module routing, and action execution.</p>
+          <div class="feature-tags">
+            <span class="chip">Wake word detection</span>
+            <span class="chip">Web Speech API</span>
+            <span class="chip">Always-on</span>
+          </div>
+        </div>
+        <div class="feature-block">
+          <div class="feature-num">02</div>
+          <div class="feature-title">Multi-Step Reasoning</div>
+          <p class="feature-body">Give Cipher a mission. It breaks it into steps, executes each sequentially, and shows the full reasoning chain as it works.</p>
+          <div class="feature-tags">
+            <span class="chip">Task planner</span>
+            <span class="chip">Sequential execution</span>
+            <span class="chip">Live reasoning feed</span>
+          </div>
+        </div>
+        <div class="feature-block">
+          <div class="feature-num">03</div>
+          <div class="feature-title">Action Modules</div>
+          <p class="feature-body">Games, booking, writing, web browsing, form filling — all reachable by voice or command bar. One commit covers the full suite.</p>
+          <div class="feature-tags">
+            <span class="chip">8 modules</span>
+            <span class="chip">One voice layer</span>
+            <span class="chip">Works offline for games</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 8 — SECURITY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top" id="security">
+  <div class="section-wrap">
+    <div class="security-grid">
+      <div>
+        <h2 class="sec-headline">Your conversations are not our product.</h2>
+        <p class="sec-body">Cipher encrypts every session before it leaves your device. Zero logs after session ends. Your API key, your model choice, zero telemetry.</p>
+        <div class="sec-feature">
+          <span class="sec-feature-dot"></span>
+          <div>
+            <div class="sec-feature-title">END-TO-END</div>
+            <p class="sec-feature-desc">Session encrypted before leaving your device</p>
+          </div>
+        </div>
+        <div class="sec-feature">
+          <span class="sec-feature-dot"></span>
+          <div>
+            <div class="sec-feature-title">ZERO MEMORY</div>
+            <p class="sec-feature-desc">No logs after session ends, enforced at the layer</p>
+          </div>
+        </div>
+        <div class="sec-feature">
+          <span class="sec-feature-dot"></span>
+          <div>
+            <div class="sec-feature-title">YOUR MODEL</div>
+            <p class="sec-feature-desc">Your API key, your model choice, no telemetry</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="iso-diagram">
+          <div class="iso-box">YOUR DEVICE</div>
+          <div class="iso-connector">
+            <div class="iso-line"></div>
+            <span class="iso-label">ENCRYPTED</span>
+          </div>
+          <div class="iso-box active">CIPHER EDGE LAYER</div>
+          <div class="iso-connector">
+            <div class="iso-line"></div>
+            <span class="iso-label">ENCRYPTED</span>
+          </div>
+          <div class="iso-box">CLAUDE / MODEL API</div>
+          <div class="iso-connector">
+            <div class="iso-line"></div>
+          </div>
+          <div class="iso-box">RESPONSE · STREAMED BACK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 9 — MODULE TABLE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top" id="modules">
+  <div class="section-wrap">
+    <div class="module-header">
+      <span class="chip chip-accent">8 MODULES · ONE COMMAND</span>
+    </div>
+    <h2 class="module-headline">Command everything.</h2>
+    <div class="module-tabs">
+      <button class="module-tab active">ALL</button>
+      <button class="module-tab">VOICE</button>
+      <button class="module-tab">AGENT</button>
+      <button class="module-tab">GAMES</button>
+    </div>
+    <table class="module-table">
+      <thead>
+        <tr>
+          <th>MODULE</th>
+          <th>TYPE</th>
+          <th>TRIGGER</th>
+          <th>STATUS</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Chess Engine</td><td class="dim">Game</td><td class="dim">"play chess"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Web Browsing</td><td class="dim">Research</td><td class="dim">"search..."</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Booking Agent</td><td class="dim">Action</td><td class="dim">"book a flight"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Form Filler</td><td class="dim">Action</td><td class="dim">"fill this form"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Writing Studio</td><td class="dim">Creation</td><td class="dim">"write an email"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Comparator</td><td class="dim">Analysis</td><td class="dim">"compare..."</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Workflow Runner</td><td class="dim">Automation</td><td class="dim">"run a workflow"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+        <tr><td>Trivia Game</td><td class="dim">Game</td><td class="dim">"quiz me"</td><td><span class="chip chip-accent">ACTIVE</span></td><td><button class="btn-launch" onclick="window.location.href='/dashboard.html'">LAUNCH</button></td></tr>
+      </tbody>
+    </table>
+    <p class="module-note">Open-weight modules run as dedicated agent sessions for you: single-context, isolated to your session.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 10 — CODE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top">
+  <div class="section-wrap">
+    <div class="code-grid">
+      <div>
+        <h2 class="code-headline">Or start with three lines of code.</h2>
+        <p class="code-body">Ship agent intelligence into your product with a single API call. Voice, text, and workflow — all from one endpoint.</p>
+        <ul class="code-bullets">
+          <li><span class="dot-accent"></span> Single REST endpoint for all 8 agent modules</li>
+          <li><span class="dot-accent"></span> Voice response streaming out of the box</li>
+          <li><span class="dot-accent"></span> Sub-second latency on every supported model</li>
+          <li><span class="dot-accent"></span> Zero session retention — enforced at the gateway</li>
+        </ul>
+      </div>
+      <div class="code-right">
+        <div class="code-tab-bar">
+          <button class="code-tab active">curl</button>
+          <button class="code-tab">python</button>
+          <button class="code-tab">node</button>
+        </div>
+        <div class="code-panel" style="border-top-left-radius:0;border-top-right-radius:0;">
+          <button class="btn btn-ghost copy-btn" style="font-size:0.72rem;position:absolute;top:3rem;right:1rem;" onclick="navigator.clipboard.writeText(document.getElementById('code-snippet').innerText)">Copy</button>
+          <pre id="code-snippet"><span class="cm"># CIPHER Agent API — voice or text command</span>
+<span class="fn">curl</span> -X POST <span class="str">https://api.cipher.ai/v1/agent</span> \
+  -H <span class="str">'Authorization: Bearer ck-••••••'</span> \
+  -H <span class="str">'Content-Type: application/json'</span> \
+  -d <span class="str">'{
+    <span class="kw">"command"</span>: "Research the best laptops under 50000 INR",
+    <span class="kw">"modules"</span>: ["browse", "compare", "recommend"],
+    <span class="kw">"voice_response"</span>: true
+  }'</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 11 — PROOF CARDS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top">
+  <div class="section-wrap">
+    <div class="proof-grid">
+      <div class="proof-card">
+        <span class="chip chip-accent">BENCHMARKS</span>
+        <h3 class="proof-card-title">Independently measured speed</h3>
+        <p class="proof-card-body">#1 Cipher Agent on Artificial Analysis. Open the live benchmark and verify the numbers.</p>
+        <a href="#" class="proof-card-link">READ MORE →</a>
+      </div>
+      <div class="proof-card">
+        <span class="chip">PARTNERSHIP</span>
+        <h3 class="proof-card-title">Microsoft AI partner</h3>
+        <p class="proof-card-body">Learn how the integration works and what it includes for enterprise deployments on Azure.</p>
+        <a href="#" class="proof-card-link">READ MORE →</a>
+      </div>
+      <div class="proof-card">
+        <span class="chip">SECURITY</span>
+        <h3 class="proof-card-title">The security overview</h3>
+        <p class="proof-card-body">Encryption, retention, session boundaries, and audit status, in plain language.</p>
+        <a href="#" class="proof-card-link">READ MORE →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 12 — FINAL CTA
+     ═══════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 11.5 — DESIGN SHOWCASE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hairline-top luminous-showcase" id="design-showcase">
+  <div class="lumen-card">
+    <div class="light-layer">
+      <div class="slit"></div>
+      <div class="lumen">
+        <div class="min"></div>
+        <div class="mid"></div>
+        <div class="hi"></div>
+      </div>
+      <div class="darken">
+        <div class="sl"></div>
+        <div class="ll"></div>
+        <div class="slt"></div>
+        <div class="srt"></div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="3.2rem" height="3.2rem" viewBox="0 0 1024 1024">
+          <path fill="url(#iconGradientActive)" d="M488.1 414.7V303.4L300.9 428l83.6 55.8zm254.1 137.7v-79.8l-59.8 39.9zM512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64m278 533c0 1.1-.1 2.1-.2 3.1c0 .4-.1.7-.2 1a14.2 14.2 0 0 1-.8 3.2c-.2.6-.4 1.2-.6 1.7c-.2.4-.4.8-.5 1.2c-.3.5-.5 1.1-.8 1.6c-.2.4-.4.7-.7 1.1c-.3.5-.7 1-1 1.5c-.3.4-.5.7-.8 1c-.4.4-.8.9-1.2 1.3c-.3.3-.6.6-1 .9c-.4.4-.9.8-1.4 1.1c-.4.3-.7.6-1.1.8c-.1.1-.3.2-.4.3L525.2 786c-4 2.7-8.6 4-13.2 4c-4.7 0-9.3-1.4-13.3-4L244.6 616.9c-.1-.1-.3-.2-.4-.3l-1.1-.8c-.5-.4-.9-.7-1.3-1.1c-.3-.3-.6-.6-1-.9c-.4-.4-.8-.8-1.2-1.3a7 7 0 0 1-.8-1c-.4-.5-.7-1-1-1.5c-.2-.4-.5-.7-.7-1.1c-.3-.5-.6-1.1-.8-1.6c-.2-.4-.4-.8-.5-1.2c-.2-.6-.4-1.2-.6-1.7c-.1-.4-.3-.8-.4-1.2c-.2-.7-.3-1.3-.4-2c-.1-.3-.1-.7-.2-1c-.1-1-.2-2.1-.2-3.1V427.9c0-1 .1-2.1.2-3.1c.1-.3.1-.7.2-1a14.2 14.2 0 0 1 .8-3.2c.2-.6.4-1.2.6-1.7c.2-.4.4-.8.5-1.2c.2-.5.5-1.1.8-1.6c.2-.4.4-.7.7-1.1c.6-.9 1.2-1.7 1.8-2.5c.4-.4.8-.9 1.2-1.3c.3-.3.6-.6 1-.9c.4-.4.9-.8 1.3-1.1s.7-.6 1.1-.8c.1-.1.3-.2.4-.3L498.7 239c8-5.3 18.5-5.3 26.5 0l254.1 169.1c.1.1.3.2.4.3l1.1.8l1.4 1.1c.3.3.6.6 1 .9c.4.4.8.8 1.2 1.3c.7.8 1.3 1.6 1.8 2.5c.2.4.5.7.7 1.1c.3.5.6 1 .8 1.6c.2.4.4.8.5 1.2c.2.6.4 1.2.6 1.7c.1.4.3.8.4 1.2c.2.7.3 1.3.4 2c.1.3.1.7.2 1c.1 1 .2 2.1.2 3.1zm-254.1 13.3v111.3L723.1 597l-83.6-55.8zM281.8 472.6v79.8l59.8-39.9zM512 456.1l-84.5 56.4l84.5 56.4l84.5-56.4zM723.1 428L535.9 303.4v111.3l103.6 69.1zM384.5 541.2L300.9 597l187.2 124.6V610.3z" filter="url(#strong-inner)" />
+          <defs>
+            <linearGradient id="iconGradientActive" x1="0" x2="0" y1="-1" y2="0.8">
+              <stop offset="0%" stop-color="#C0152A" />
+              <stop offset="100%" stop-color="#D4A017" />
+            </linearGradient>
+            <filter id="strong-inner">
+              <feFlood flood-color="rgba(192,21,42,0.2)" />
+              <feComposite operator="out" in2="SourceGraphic" />
+              <feMorphology operator="dilate" radius="8" />
+              <feGaussianBlur stdDeviation="32" />
+              <feComposite operator="atop" in2="SourceGraphic" />
+            </filter>
+          </defs>
+        </svg>
+      </div>
+      <div class="bottom">
+        <h4>Luminous Design</h4>
+        <p>Light Folds Around Form <br />Revealing Layers Of Depth</p>
+        <div class="toggle" onclick="this.classList.toggle('active');">
+          <div class="handle"></div>
+          <span>Activate Lumen</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <span class="chip">OPEN THE STUDIO</span>
+    <h2 class="final-headline">Build with the <i>cipher mind.</i></h2>
+    <p class="final-body">Cipher ships as a single runtime. Drop it into any project and the agentic intelligence comes with it.</p>
+    <div class="final-ctas">
+      <a href="/dashboard.html" class="btn btn-primary">Get the system ↓</a>
+      <button class="btn btn-ghost">◎ Read the spec</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SECTION 13 — FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">CIPHER AI TECHNOLOGIES</div>
+      <p class="footer-brand-addr">PIMPRI CHINCHWAD, PUNE · MAHARASHTRA</p>
+      <span class="footer-brand-social">X.COM/CIPHERAI</span>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Platform</div>
+      <a href="#">Agent Core</a>
+      <a href="#">Voice Layer</a>
+      <a href="#">Models</a>
+      <a href="#">Benchmarks</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Deployment</div>
+      <a href="#">Security</a>
+      <a href="#">Session Privacy</a>
+      <a href="#">Zero Retention</a>
+      <a href="#">Enterprise</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Developers</div>
+      <a href="#">Docs</a>
+      <a href="#">API Reference</a>
+      <a href="#">Command Line</a>
+      <a href="/dashboard.html">Log in</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <a href="#">Mission</a>
+      <a href="#">Contact</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+      <a href="#">Press Kit</a>
+      <a href="#">Brand</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 CIPHER AI TECHNOLOGIES · ALL SYSTEMS OPERATIONAL</span>
+    <div class="footer-legal">
+      <a href="#">PRIVACY</a>
+      <a href="#">TERMS</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INLINE JS — Terminal Tabs, Benchmark Observer, Three.js Scene
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+// ── Terminal Tab Switching ──────────────────────────────────
+document.querySelectorAll('.terminal-tab[data-tab]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.terminal-tab[data-tab]').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.terminal-content').forEach(c => c.classList.add('hidden'));
+    const target = document.getElementById('tab-' + tab.getAttribute('data-tab'));
+    if (target) target.classList.remove('hidden');
+  });
+});
+
+// ── Benchmark Bar Animation (IntersectionObserver) ──────────
+const benchChart = document.getElementById('bench-chart');
+if (benchChart) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        benchChart.querySelectorAll('.bench-bar').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-width') + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(benchChart);
+}
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// THREE.JS — CIPHER AGENT UNIVERSE (FULLSCREEN IMMERSIVE)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('cipher-3d');
+  if (!canvas) return;
+  const hero = document.getElementById('hero-universe');
+
+  const W = () => hero.clientWidth;
+  const H = () => hero.clientHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0xFFF6CD, 0.025);
+
+  const camera = new THREE.PerspectiveCamera(60, W() / H(), 0.1, 200);
+  camera.position.set(0, 1.5, 12);
+
+  // ── LIGHTING ──
+  scene.add(new THREE.AmbientLight(0xFFEEDD, 1.2));
+  const redLight = new THREE.PointLight(0xC0152A, 6, 30);
+  redLight.position.set(-4, 4, 5);
+  scene.add(redLight);
+  const goldLight = new THREE.PointLight(0xD4A017, 4, 25);
+  goldLight.position.set(5, -3, 3);
+  scene.add(goldLight);
+  const backLight = new THREE.PointLight(0x8B0000, 3, 35);
+  backLight.position.set(0, 0, -10);
+  scene.add(backLight);
+
+  // ── BRAIN CORE ──
+  const RED = new THREE.Color('#C0152A');
+  const brainGeo = new THREE.IcosahedronGeometry(1.2, 2);
+  const brainMat = new THREE.MeshStandardMaterial({
+    color: 0x2A0008, emissive: RED, emissiveIntensity: 0.6,
+    metalness: 0.7, roughness: 0.3
+  });
+  const brain = new THREE.Mesh(brainGeo, brainMat);
+  scene.add(brain);
+
+  const brainWireMat = new THREE.MeshBasicMaterial({
+    color: 0xBC7B26, wireframe: true, transparent: true, opacity: 0.5
+  });
+  const brainWire = new THREE.Mesh(brainGeo, brainWireMat);
+  brainWire.scale.setScalar(1.02);
+  scene.add(brainWire);
+
+  // Inner pulse glow
+  const glowGeo = new THREE.SphereGeometry(1.3, 16, 16);
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: 0xC0152A, transparent: true, opacity: 0.15
+  });
+  const pulseGlow = new THREE.Mesh(glowGeo, glowMat);
+  scene.add(pulseGlow);
+
+  // ── PLEXUS NETWORK (UNIVERSE SYSTEM) ──
+  const NODE_COUNT = 300;
+  const nodes = [];
+  
+  // Distribute nodes in a galaxy/sphere formation
+  for(let i=0; i<NODE_COUNT; i++) {
+    const r = 3 + Math.random() * 18;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    // Squashed on the Y axis to form a disk-like galaxy shape
+    const y = r * Math.cos(phi) * 0.4; 
+    const x = r * Math.sin(phi) * Math.cos(theta);
+    const z = r * Math.sin(phi) * Math.sin(theta);
+    nodes.push(new THREE.Vector3(x, y, z));
+  }
+
+  const linePositions = [];
+  const lineColors = [];
+  const MAX_DISTANCE = 3.5;
+  
+  const color1 = new THREE.Color('#C0152A');
+  const color2 = new THREE.Color('#D4A017');
+  
+  // Connect nearest nodes
+  for(let i=0; i<NODE_COUNT; i++) {
+    let connections = 0;
+    for(let j=i+1; j<NODE_COUNT; j++) {
+      const dist = nodes[i].distanceTo(nodes[j]);
+      // Limit max connections per node to keep it clean
+      if(dist < MAX_DISTANCE && connections < 4) {
+        linePositions.push(
+          nodes[i].x, nodes[i].y, nodes[i].z,
+          nodes[j].x, nodes[j].y, nodes[j].z
+        );
+        
+        // Color gradient based on distance from center
+        const centerDist = nodes[i].length();
+        const c = centerDist > 10 ? color2 : color1;
+        lineColors.push(c.r, c.g, c.b, c.r, c.g, c.b);
+        connections++;
+      }
+    }
+  }
+
+  const linesGeo = new THREE.BufferGeometry();
+  linesGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+  linesGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+  const linesMat = new THREE.LineBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.55
+  });
+  const networkLines = new THREE.LineSegments(linesGeo, linesMat);
+  
+  const pointsGeo = new THREE.BufferGeometry().setFromPoints(nodes);
+  const pointsColors = [];
+  for(let i=0; i<NODE_COUNT; i++) {
+     const isGold = Math.random() > 0.8;
+     pointsColors.push(isGold ? color2.r : color1.r, isGold ? color2.g : color1.g, isGold ? color2.b : color1.b);
+  }
+  pointsGeo.setAttribute('color', new THREE.Float32BufferAttribute(pointsColors, 3));
+  
+  const pointsMat = new THREE.PointsMaterial({
+    vertexColors: true, size: 0.22, transparent: true, opacity: 0.95
+  });
+  const networkPoints = new THREE.Points(pointsGeo, pointsMat);
+  
+  const universeGroup = new THREE.Group();
+  universeGroup.add(networkLines);
+  universeGroup.add(networkPoints);
+  
+  // Outer geometric sphere framing the universe
+  const outerGeo = new THREE.IcosahedronGeometry(22, 1);
+  const outerMat = new THREE.MeshBasicMaterial({
+    color: 0xC0152A, wireframe: true, transparent: true, opacity: 0.08
+  });
+  const outerSphere = new THREE.Mesh(outerGeo, outerMat);
+  universeGroup.add(outerSphere);
+  
+  // Add a slight tilt to the entire system
+  universeGroup.rotation.z = Math.PI * 0.08;
+  scene.add(universeGroup);
+
+  // ── AMBIENT DUST ──
+  const dustCount = 800;
+  const dustPos = [];
+  for(let i=0; i<dustCount; i++) {
+    dustPos.push(
+      (Math.random()-0.5)*50,
+      (Math.random()-0.5)*50,
+      (Math.random()-0.5)*50
+    );
+  }
+  const dustGeo = new THREE.BufferGeometry();
+  dustGeo.setAttribute('position', new THREE.Float32BufferAttribute(dustPos, 3));
+  const dustMat = new THREE.PointsMaterial({ color: 0x8B0000, size: 0.06, transparent: true, opacity: 0.45 });
+  const dust = new THREE.Points(dustGeo, dustMat);
+  scene.add(dust);
+
+  // ── MOUSE PARALLAX ──
+  let mouseX = 0, mouseY = 0;
+  const TARGET = { x: 0, y: 0 };
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // ── RENDER LOOP ──
+  const clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    // Rotate core
+    brain.rotation.x = t * 0.15;
+    brain.rotation.y = t * 0.2;
+    brainWire.rotation.copy(brain.rotation);
+    
+    pulseGlow.scale.setScalar(1 + Math.sin(t * 2) * 0.1);
+    
+    // Slowly rotate the entire plexus network
+    universeGroup.rotation.y = t * 0.025;
+    universeGroup.rotation.x = Math.sin(t * 0.015) * 0.05;
+
+    // Ambient dust drift
+    dust.rotation.y = t * 0.01;
+    dust.rotation.x = t * 0.005;
+
+    // Smooth Mouse Parallax
+    TARGET.x += (mouseY * 0.15 - TARGET.x) * 0.05;
+    TARGET.y += (mouseX * 0.15 - TARGET.y) * 0.05;
+    
+    // Move camera based on parallax and look at center
+    camera.position.x = TARGET.y * 6;
+    camera.position.y = 1.5 + (-TARGET.x * 4);
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Resize
+  window.addEventListener('resize', () => {
+    renderer.setSize(W(), H());
+    camera.aspect = W() / H();
+    camera.updateProjectionMatrix();
+  });
+  
+  // Reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    renderer.render(scene, camera);
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// SCROLL ANIMATIONS & OBSERVERS
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener("DOMContentLoaded", () => {
+  // Intersection Observer for slide-up reveals
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px 0px -50px 0px",
+    threshold: 0.15
+  };
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-up, .v-card, .spec-panel, .platform-left, .platform-block').forEach(el => {
+    el.classList.add('reveal-up');
+    revealObserver.observe(el);
+  });
+
+  // Dynamic Background Color on Scroll — keep cream palette
+  const root = document.documentElement;
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const scrollPercent = Math.min(scrollY / maxScroll, 1);
+    
+    // Subtle cream-to-warm-ivory shift (stays light)
+    const r = Math.floor(255 - (10 * scrollPercent));
+    const g = Math.floor(246 - (12 * scrollPercent));
+    const b = Math.floor(205 - (15 * scrollPercent));
+    
+    root.style.setProperty('--bg', `rgb(${r}, ${g}, ${b})`);
+  }, { passive: true });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ASCII BACKGROUND ANIMATION
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('ascii-bg');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = document.getElementById('hero-universe');
+
+  let width, height;
+  let columns = [];
+  const chars = ['+', '-', '=', ':', 'x', '#', '.', '|', ' '];
+  const colors = ['#C0152A', '#8B0000', '#D4A017', '#3D3A36', '#171717'];
+
+  function init() {
+    width = canvas.width = hero.clientWidth;
+    height = canvas.height = hero.clientHeight;
+    
+    const fontSize = 14;
+    const colCount = Math.floor(width / fontSize);
+    
+    columns = [];
+    for (let i = 0; i < colCount; i++) {
+      columns.push({
+        x: i * fontSize,
+        y: Math.random() * height,
+        speed: 0.5 + Math.random() * 1.5,
+        chars: Array(15).fill('').map(() => ({
+          char: chars[Math.floor(Math.random() * chars.length)],
+          color: colors[Math.floor(Math.random() * colors.length)],
+          opacity: Math.random()
+        }))
+      });
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.font = '14px JetBrains Mono, monospace';
+    
+    columns.forEach(col => {
+      col.y += col.speed;
+      if (col.y > height + 200) {
+        col.y = -200;
+        col.x = Math.floor(Math.random() * (width / 14)) * 14;
+      }
+
+      col.chars.forEach((c, i) => {
+        // Randomly flick characters
+        if (Math.random() < 0.02) {
+          c.char = chars[Math.floor(Math.random() * chars.length)];
+        }
+        
+        ctx.fillStyle = c.color;
+        ctx.globalAlpha = c.opacity * (1 - (i / col.chars.length));
+        ctx.fillText(c.char, col.x, col.y - (i * 18));
+      });
+    });
+    
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+  
+  window.addEventListener('resize', init);
+})();
+</script>
+
+</body>
+</html>

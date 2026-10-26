@@ -1,0 +1,30 @@
+.arsenal-row{display:flex;gap:3rem;align-items:center;margin:3rem 0;text-align:left}.arsenal-row.reverse{flex-direction:row-reverse}
+.arsenal-text h3{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(1.25rem,2vw,1.75rem);margin-bottom:1rem}
+.arsenal-text p{font-family:'Inter',sans-serif;font-weight:300;color:var(--white-ghost);line-height:1.7;margin-bottom:1rem}
+.feature-bullets{display:flex;flex-direction:column;gap:.5rem}.feature-bullets span{font-family:'Inter',sans-serif;font-weight:400;color:var(--white-soft);font-size:.9rem}.feature-bullets span::first-letter{color:var(--crimson-glow)}
+.chess-mock,.editor-mock,.booking-mock{flex:1;min-width:280px}
+.chess-board{display:grid;grid-template-columns:repeat(8,1fr);width:280px;border:1px solid var(--gold-dim);border-radius:4px;overflow:hidden}
+.chess-sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.chess-sq.light{background:#2d000a}.chess-sq.dark{background:#1a0005}
+.editor-mock{background:var(--black-raised);border:.5px solid var(--black-border);border-radius:8px;overflow:hidden}
+.editor-toolbar{display:flex;gap:1rem;padding:.75rem 1rem;border-bottom:.5px solid var(--gold-dim)}.editor-toolbar span,.editor-toolbar button{font-family:'Rajdhani',sans-serif;color:var(--white-ghost);font-size:.85rem;background:none;border:none;cursor:pointer}
+.editor-body{padding:1.5rem}
+.typed-line{font-family:'Inter',sans-serif;font-weight:400;color:var(--white-soft);line-height:1.8}
+.gold-cursor{color:var(--gold-pure);animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.ai-suggestion{margin-top:1rem;padding:.75rem 1rem;border-left:2px solid var(--crimson-core);font-family:'Inter',sans-serif;font-weight:300;color:var(--white-soft);font-size:.9rem;background:rgba(139,0,0,.06)}
+.booking-mock{display:flex;flex-direction:column;gap:1rem}
+.booking-card{background:var(--black-surface);border:.5px solid var(--black-border);border-radius:8px;padding:1.25rem}
+.booking-header{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:.5rem}
+.booking-detail{font-family:'Inter',sans-serif;font-weight:300;color:var(--white-ghost);font-size:.85rem}
+.booking-status{font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:.1em;margin-top:.5rem;text-transform:uppercase}
+.booking-status.confirmed{color:#4CAF50}.booking-status.pending{color:var(--gold-pure)}
+.stats-bar{background:var(--crimson-dim);display:flex;justify-content:center;gap:clamp(2rem,5vw,5rem);padding:3rem 2rem;flex-wrap:wrap}
+.stat{text-align:center}.stat-num{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(2rem,4vw,3rem);display:block;color:#fff}
+.stat-label{font-family:'Rajdhani',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.2em;font-size:.7rem;color:var(--gold-pure);display:block;margin-top:.5rem}
+.cta-final{display:flex;flex-direction:column;align-items:center;position:relative}.cta-final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(139,0,0,.18) 0%,transparent 70%);pointer-events:none}
+.orb-small{width:170px;height:170px}
+.footer{background:#030303;border-top:.5px solid var(--black-border);padding:2.5rem 2rem 1rem}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-links{display:flex;gap:1.5rem}.footer-links a{font-family:'Rajdhani',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.15em;font-size:.7rem;color:var(--white-ghost);text-decoration:none;transition:color .2s}.footer-links a:hover{color:var(--gold-pure)}
+.footer-gradient{height:1px;margin-top:2rem;background:linear-gradient(90deg,var(--crimson-core),var(--gold-pure),var(--crimson-core))}

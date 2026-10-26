@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+ENV/
+env/
+
+# Databases & Runtime State (Secured)
+*.db
+*.sqlite
+*.sqlite3
+cipher.db
+
+# User Uploads Storage (Secured - do not commit uploaded documents)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Environment & Credentials (Secured)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# Node / Frontend Build
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# IDE & OS Artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Scratch / Unrelated Files
+final_results.md
+frontend/test.txt
+*.log

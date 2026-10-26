@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIPHER — Agent OS & Research Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/global.css">
+    <link rel="stylesheet" href="/src/styles/dashboard.css">
+    <link rel="stylesheet" href="/src/styles/kg.css">
+    <link rel="stylesheet" href="/src/styles/crew.css">
+</head>
+<body>
+<div class="app-shell" id="app-shell">
+
+    <!-- ═══════════════════════════════════════════════════════
+         SIDEBAR
+         ═══════════════════════════════════════════════════════ -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="nav-logo">
+                <div class="logo-icon">C</div>
+                <div class="logo-text-wrap">
+                    <span class="logo-text">Cipher</span>
+                    <span class="logo-sub">NLP AGENT OS</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-label">Active Workspace</div>
+        <div class="sidebar-project-select-wrap">
+            <select id="sidebar-active-project" class="sidebar-proj-select" aria-label="Active Project">
+                <option value="">All Projects Workspace</option>
+            </select>
+        </div>
+
+        <div class="sidebar-label">Workspace Modules</div>
+        <div class="nav-links">
+            <a href="#agent-dashboard" class="nav-link active" data-target="agent-dashboard">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                Overview
+            </a>
+            <a href="#knowledge-library" class="nav-link" data-target="knowledge-library">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+                Knowledge Library
+            </a>
+            <a href="#import-web" class="nav-link" data-target="import-web">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+                Import & Web Research
+            </a>
+            <a href="#research-intelligence" class="nav-link" data-target="research-intelligence">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                Research Intelligence
+            </a>
+            <a href="#evidence-explorer" class="nav-link" data-target="evidence-explorer">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+                Evidence Explorer
+            </a>
+            <a href="#knowledge-graph" class="nav-link" data-target="knowledge-graph">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
+                Knowledge Graph
+            </a>
+            <a href="#knowledge-copilot" class="nav-link" data-target="knowledge-copilot">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                Knowledge Copilot
+            </a>
+            <a href="#nlp-lab" class="nav-link" data-target="nlp-lab">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"/></svg></span>
+                NLP Lab (Playground)
+            </a>
+            <a href="#agent-workflows" class="nav-link" data-target="agent-workflows">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+                Agent Workflows
+            </a>
+            <a href="#multi-agent-crew" class="nav-link" data-target="multi-agent-crew">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                Multi-Agent Research Collaboration Team
+            </a>
+            <a href="#report-studio" class="nav-link" data-target="report-studio">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                Report Studio
+            </a>
+            <a href="#about-project" class="nav-link" data-target="about-project">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+                About & User Guide
+            </a>
+
+            <div class="nav-divider"></div>
+
+            <a href="#settings-privacy" class="nav-link" data-target="settings-privacy">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06-.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                Settings & Engine
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-model-badge">
+                <span class="model-dot" id="sidebar-model-dot"></span>
+                <span class="model-label" id="sidebar-model">CIPHER Core</span>
+            </div>
+            <a class="nav-link" id="logout-btn">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+                Disconnect
+            </a>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════════
+         TOP BAR
+         ═══════════════════════════════════════════════════════ -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="topbar-title" id="topbar-section-title">Overview</span>
+            <span class="topbar-badge" id="topbar-active-proj-tag">Workspace: All Projects Workspace</span>
+        </div>
+        <div class="topbar-right">
+            <!-- Sci-Fi HUD Toggle Button -->
+            <button class="topbar-btn scifi-hud-btn active" id="scifi-hud-toggle" title="Toggle Sci-Fi NLP Visor">
+                <span class="hud-pulse-ring"></span>
+                <span class="hud-btn-icon">⚡</span>
+                <span>Neural HUD</span>
+            </button>
+            <button class="topbar-icon-btn" id="mind-toggle" title="Toggle System Log">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="notif-dot"></span>
+            </button>
+            <div class="topbar-avatar" id="topbar-avatar">OP</div>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         MAIN CONTENT AREA
+         ═══════════════════════════════════════════════════════ -->
+    <main class="dashboard-content" id="dashboard-content">
+
+        <!-- ── OVERVIEW ────────────────────────────── -->
+        <section id="agent-dashboard" class="dashboard-section active">
+            <div class="welcome-banner">
+                <div class="welcome-left">
+                    <h1 class="welcome-title">Command Center</h1>
+                    <p class="welcome-sub">Local-First NLP Research & Agentic Intelligence Platform.</p>
+                </div>
+                <div class="welcome-right">
+                    <div class="ollama-badge" id="ollama-status">
+                        <div class="ollama-dot" id="ollama-status-dot"></div>
+                        <div class="ollama-info">
+                            <span class="ollama-label" id="ollama-status-text">NLP CORE ACTIVE</span>
+                            <span class="ollama-model" id="ollama-model-name">spaCy + MiniLM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stat-row">
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <svg class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        API Inferences
+                    </div>
+                    <div class="stat-value" id="ov-calls">0</div>
+                    <span class="stat-change up">↑ Real-Time</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <svg class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Indexed Documents
+                    </div>
+                    <div class="stat-value" id="ov-docs">0</div>
+                    <span class="stat-change up" id="ov-docs-chunks">0 Chunks</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <svg class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Inference Latency
+                    </div>
+                    <div class="stat-value" id="ov-resp">18ms</div>
+                    <span class="stat-change up">⚡ CPU Accelerated</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <svg class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Accuracy Benchmark
+                    </div>
+                    <div class="stat-value stat-online" id="ov-status">87.5%</div>
+                    <span class="stat-change up">● ROC-AUC: 0.9456</span>
+                </div>
+            </div>
+
+            <!-- Overview Grid -->
+            <div class="overview-grid">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <span class="dash-card-title">Live Neural Activity</span>
+                        <span class="dash-card-meta">Real-Time Telemetry</span>
+                    </div>
+                    <div class="dash-card-body">
+                        <div class="activity-feed" id="overview-activity">
+                            <div class="activity-item">
+                                <div class="activity-icon type-cmd">⚡</div>
+                                <div>
+                                    <div class="activity-text">CIPHER NLP Engine initialized — spaCy NER, MiniLM vectors & RAG online.</div>
+                                    <div class="activity-time">Just now</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <span class="dash-card-title">Autonomous Agents</span>
+                        <span class="dash-card-meta">8 Sub-Services Active</span>
+                    </div>
+                    <div class="dash-card-body">
+                        <div class="agents-list">
+                            <div class="agent-row" data-target="knowledge-copilot">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">RAG Knowledge Copilot</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="nlp-lab">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">spaCy NER & POS Parser</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="evidence-explorer">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">Evidence Stance Classifier</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="import-web">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">Web Scraper & Digest</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="research-intelligence">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">Research Paper Extractor</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="agent-workflows">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">Multi-Step Agent Workflows</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                            <div class="agent-row" data-target="report-studio">
+                                <div class="agent-row-left"><span class="agent-dot active"></span><span class="agent-row-name">Report Studio Synthesizer</span></div>
+                                <span class="agent-row-status online">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ── KNOWLEDGE LIBRARY ─────────────────────────────── -->
+        <section id="knowledge-library" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Knowledge Library</h2>
+                <p class="section-desc">Upload documents (PDF, DOCX, TXT, MD, CSV) for automated passage chunking, 384-D dense vector embedding, and NER extraction.</p>
+            </div>
+
+            <div class="upload-dropzone" id="upload-dropzone">
+                <div class="dropzone-content">
+                    <div class="dropzone-icon">📄</div>
+                    <div class="dropzone-text">
+                        <b>Upload Research Papers & Data Files</b>
+                        <span>Drag & drop files here, or click to browse (PDF, DOCX, TXT, MD, CSV)</span>
+                    </div>
+                    <input type="file" id="document-upload" class="dropzone-file-input" accept=".pdf,.docx,.txt,.md,.csv">
+                    <button class="btn-primary" id="btn-upload-doc">Upload & Index</button>
+                </div>
+
+                <div id="upload-progress-container" class="upload-progress-wrap" style="display:none;">
+                    <div class="upload-progress-header">
+                        <span id="upload-status-text">Ingesting & computing tensor vectors...</span>
+                        <span id="upload-progress-percent">0%</span>
+                    </div>
+                    <div class="upload-progress-track">
+                        <div id="upload-progress-bar" class="upload-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="library-header-row">
+                <h3 class="panel-subtitle">Indexed Documents (<span id="library-doc-count">0</span>)</h3>
+                <div class="library-actions">
+                    <button class="btn-secondary" id="btn-refresh-docs">Refresh</button>
+                </div>
+            </div>
+
+            <div id="documents-list" class="documents-grid"></div>
+        </section>
+
+        <!-- ── IMPORT & WEB RESEARCH ─────────────────────────────── -->
+        <section id="import-web" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Import & Web Research</h2>
+                <p class="section-desc">Ingest full articles and web pages or search live scientific topics. Automatically extracts full content, executive summary, key news highlights, and relevant high-resolution images.</p>
+            </div>
+            
+            <div class="card-panel">
+                <div class="input-group" style="gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="import-url" class="dash-input" style="flex: 1; min-width: 280px;" placeholder="Paste article URL (https://...) or enter research topic to search...">
+                    <button class="btn-primary" id="btn-import-url">Fetch & Analyze</button>
+                    <button class="btn-secondary" id="btn-web-search">Search Web</button>
+                </div>
+                <div class="quick-search-chips" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.75rem; align-items:center;">
+                    <span style="font-size:0.75rem; color:rgba(47,9,9,0.6); font-family:var(--font-mono);">Popular Topics:</span>
+                    <button class="preset-chip web-topic-chip" data-query="Artificial intelligence in medicine">AI in Medicine</button>
+                    <button class="preset-chip web-topic-chip" data-query="Quantum computing breakthroughs">Quantum Computing</button>
+                    <button class="preset-chip web-topic-chip" data-query="Acoustic anomaly detection industrial fans">Acoustics DSP</button>
+                    <button class="preset-chip web-topic-chip" data-query="Large language models reasoning">LLM Reasoning</button>
+                    <button class="preset-chip web-topic-chip" data-query="Perovskite solar cell efficiency">Solar Energy</button>
+                </div>
+            </div>
+
+            <!-- Web Search Results Container -->
+            <div id="web-search-results" class="feature-output" style="display:none; margin-bottom:1.5rem;"></div>
+
+            <!-- Ingested Article Analysis (Full content, Summary, Key News, Images) -->
+            <div id="import-results" class="feature-output"></div>
+        </section>
+
+        <!-- ── RESEARCH INTELLIGENCE ─────────────────────────────── -->
+        <section id="research-intelligence" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Research Intelligence</h2>
+                <p class="section-desc">Extract structured scientific metadata (Methodology, Datasets, Metrics, Findings, Limitations) and compare multiple papers across your project.</p>
+            </div>
+
+            <div class="card-panel">
+                <div class="intelligence-controls">
+                    <div class="control-col">
+                        <label class="field-label">Analyze Individual Document</label>
+                        <div class="input-group">
+                            <select id="intel-doc-select" class="dash-select" aria-label="Select Document"></select>
+                            <button class="btn-secondary" id="btn-extract-paper-struct">Extract Paper Structure</button>
+                        </div>
+                    </div>
+                    <div class="control-col">
+                        <label class="field-label">Cross-Paper Synthesis</label>
+                        <button class="btn-primary" id="btn-analyze-papers">Generate Multi-Paper Comparison Matrix</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="intelligence-results" class="feature-output"></div>
+        </section>
+
+        <!-- ── EVIDENCE EXPLORER ─────────────────────────────── -->
+        <section id="evidence-explorer" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Evidence Explorer</h2>
+                <p class="section-desc">Extract empirical scientific claims and evaluate cross-document stance (Supports, Contradicts, Neutral) with confidence metrics.</p>
+            </div>
+
+            <div class="card-panel">
+                <div class="input-group">
+                    <input id="evidence-claim" class="dash-input" placeholder="Type a claim to verify or leave blank to extract all claims across documents">
+                    <button class="btn-primary" id="btn-evidence-check">Run Evidence Stance Audit</button>
+                </div>
+            </div>
+
+            <div id="evidence-results" class="feature-output"></div>
+        </section>
+
+        <!-- ── KNOWLEDGE GRAPH ─────────────────────────────── -->
+        <section id="knowledge-graph" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Knowledge Graph Engine</h2>
+                <p class="section-desc">Transform ingested research papers into an interactive, multi-document scientific knowledge graph. Grounded with exact sentence citations, confidence metrics, and evidence inspection.</p>
+            </div>
+
+            <!-- Knowledge Graph Global Stats -->
+            <div class="kg-stats-row">
+                <div class="kg-stat-card">
+                    <span class="kg-stat-num" id="kg-stat-entities">0</span>
+                    <span class="kg-stat-lbl">Unique Entities</span>
+                </div>
+                <div class="kg-stat-card">
+                    <span class="kg-stat-num" id="kg-stat-relations">0</span>
+                    <span class="kg-stat-lbl">Extracted Relations</span>
+                </div>
+                <div class="kg-stat-card">
+                    <span class="kg-stat-num" id="kg-stat-papers">0</span>
+                    <span class="kg-stat-lbl">Source Papers</span>
+                </div>
+                <div class="kg-stat-card">
+                    <span class="kg-stat-num" id="kg-stat-evidence">0</span>
+                    <span class="kg-stat-lbl">Traceable Citations</span>
+                </div>
+                <div class="kg-stat-card">
+                    <span class="kg-stat-num" id="kg-stat-reviews">0</span>
+                    <span class="kg-stat-lbl">Pending Reviews</span>
+                </div>
+            </div>
+
+            <!-- Knowledge Graph Generator Panel (Dual Mode: AI Text Generator & Document Extractor) -->
+            <div class="card-panel kg-builder-bar">
+                <div class="kg-gen-tabs-header">
+                    <button class="kg-gen-tab-btn active" id="kg-tab-ai-gen">
+                        <span>⚡</span>
+                        <span>AI Prompt & Text Generator</span>
+                    </button>
+                    <button class="kg-gen-tab-btn" id="kg-tab-doc-gen">
+                        <span>📄</span>
+                        <span>Extract from Ingested Document</span>
+                    </button>
+                    <div style="margin-left:auto; display:flex; gap:0.5rem;">
+                        <button class="btn-secondary" id="btn-kg-open-merge" title="Merge duplicate entities" style="padding:0.4rem 0.8rem; font-size:0.75rem;">
+                            ⚯ Merge Entities
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mode 1: AI Prompt & Free-form Text Generator -->
+                <div id="kg-mode-ai-panel">
+                    <div style="display:flex; gap:0.8rem; margin-bottom:0.6rem;">
+                        <input type="text" id="kg-ai-title-input" class="dash-input" placeholder="Knowledge Graph Title (optional, e.g. Quantum Computing Architecture)" style="flex:1;">
+                    </div>
+                    <textarea id="kg-ai-prompt-input" class="kg-ai-prompt-area" placeholder="Enter research notes, scientific text, abstract, or system concepts to generate an instant AI Knowledge Graph with Subject-Predicate-Object triplets..."></textarea>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; margin-top:0.8rem;">
+                        <div class="kg-prompt-presets">
+                            <span class="kg-prompt-preset-lbl">Quick Presets:</span>
+                            <span class="kg-prompt-preset-pill" data-preset="kg_dl">Knowledge Graphs & Deep Learning</span>
+                            <span class="kg-prompt-preset-pill" data-preset="crispr">CRISPR-Cas9 Gene Editing</span>
+                            <span class="kg-prompt-preset-pill" data-preset="quantum">Quantum Error Correction</span>
+                            <span class="kg-prompt-preset-pill" data-preset="llm">Transformer Attention & LLMs</span>
+                        </div>
+                        <button class="btn-primary" id="btn-kg-ai-generate" style="display:flex; align-items:center; gap:0.5rem; white-space:nowrap;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Generate Knowledge Graph
+                        </button>
+                    </div>
+                    <div id="kg-ai-status" class="status-badge" style="display:none; margin-top:0.6rem;"></div>
+                </div>
+
+                <!-- Mode 2: Ingested Document Extraction -->
+                <div id="kg-mode-doc-panel" style="display:none;">
+                    <div class="kg-builder-controls">
+                        <div class="kg-builder-field">
+                            <label class="field-label">Extract & Build Graph from Ingested Document</label>
+                            <select id="kg-build-doc-select" class="dash-select" aria-label="Select Document to Build">
+                                <option value="">Select Ingested Document...</option>
+                            </select>
+                        </div>
+                        <div class="kg-builder-toggle">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="kg-build-rebuild" checked>
+                                <span>Rebuild & Re-index</span>
+                            </label>
+                        </div>
+                        <button class="btn-primary" id="btn-kg-build">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Build from Document
+                        </button>
+                    </div>
+                    <div id="kg-build-status" class="status-badge" style="display:none; margin-top:0.6rem;"></div>
+                </div>
+            </div>
+
+            <!-- Interactive Workspace (Filters + Network Canvas + Evidence Inspector) -->
+            <div class="kg-workspace-container">
+                <!-- Filter Toolbar -->
+                <div class="kg-toolbar">
+                    <div class="kg-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="kg-search-input" placeholder="Search entities, models, methods...">
+                    </div>
+
+                    <div class="kg-filter-group">
+                        <select id="kg-filter-type" class="kg-select" aria-label="Filter by Entity Type">
+                            <option value="">All Entity Types</option>
+                            <option value="MODEL">MODEL</option>
+                            <option value="METHOD">METHOD</option>
+                            <option value="DATASET">DATASET</option>
+                            <option value="BENCHMARK">BENCHMARK</option>
+                            <option value="METRIC">METRIC</option>
+                            <option value="TECHNOLOGY">TECHNOLOGY</option>
+                            <option value="MATERIAL">MATERIAL</option>
+                            <option value="CONCEPT">CONCEPT</option>
+                            <option value="PAPER">PAPER</option>
+                            <option value="AUTHOR">AUTHOR</option>
+                            <option value="ORGANIZATION">ORGANIZATION</option>
+                        </select>
+                    </div>
+
+                    <div class="kg-filter-group">
+                        <select id="kg-filter-predicate" class="kg-select" aria-label="Filter by Predicate">
+                            <option value="">All Relationships</option>
+                            <option value="USES_METHOD">USES_METHOD</option>
+                            <option value="EVALUATED_ON">EVALUATED_ON</option>
+                            <option value="REPORTS_METRIC">REPORTS_METRIC</option>
+                            <option value="IMPROVES">IMPROVES</option>
+                            <option value="REDUCES">REDUCES</option>
+                            <option value="INCREASES">INCREASES</option>
+                            <option value="ASSOCIATED_WITH">ASSOCIATED_WITH</option>
+                            <option value="AUTHORED_BY">AUTHORED_BY</option>
+                            <option value="PUBLISHED_IN">PUBLISHED_IN</option>
+                            <option value="MENTIONS">MENTIONS</option>
+                        </select>
+                    </div>
+
+                    <div class="kg-filter-slider">
+                        <label>Min Conf: <span id="kg-filter-conf-val">0%</span></label>
+                        <input type="range" id="kg-filter-conf" min="0" max="1" step="0.05" value="0.0">
+                    </div>
+
+                    <div class="kg-filter-group">
+                        <select id="kg-filter-review" class="kg-select" aria-label="Filter by Review Status">
+                            <option value="">All Review States</option>
+                            <option value="unreviewed">Unreviewed</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="corrected">Corrected</option>
+                        </select>
+                    </div>
+
+                    <div class="kg-filter-group">
+                        <select id="kg-layout-select" class="kg-select" aria-label="Network Layout">
+                            <option value="cose">Force-Directed (CoSE)</option>
+                            <option value="breadthfirst">Hierarchical</option>
+                            <option value="circle">Circular</option>
+                            <option value="concentric">Concentric</option>
+                            <option value="grid">Grid</option>
+                        </select>
+                    </div>
+
+                    <div class="kg-btn-group">
+                        <button class="btn-icon-dash" id="btn-kg-toggle-labels" title="Toggle Edge Relationship Labels">🏷️ Labels</button>
+                        <button class="btn-icon-dash" id="btn-kg-fit" title="Fit to View">⛶ Fit</button>
+                        <button class="btn-icon-dash" id="btn-kg-reset" title="Reset Filters">↺ Reset</button>
+                        <button class="btn-icon-dash" id="btn-kg-export-png" title="Export Graph as PNG Image">📷 PNG</button>
+                        <button class="btn-icon-dash" id="btn-kg-export-json" title="Export Graph Data as JSON">📋 JSON</button>
+                    </div>
+                </div>
+
+                <!-- Main Visualization Area -->
+                <div class="kg-canvas-row">
+                    <div class="kg-network-panel">
+                        <!-- Legend -->
+                        <div class="kg-legend-bar">
+                            <span class="legend-pill" style="--c:#8b5cf6">● Model</span>
+                            <span class="legend-pill" style="--c:#3b82f6">● Method</span>
+                            <span class="legend-pill" style="--c:#10b981">● Dataset</span>
+                            <span class="legend-pill" style="--c:#14b8a6">● Benchmark</span>
+                            <span class="legend-pill" style="--c:#f59e0b">● Metric</span>
+                            <span class="legend-pill" style="--c:#6366f1">● Technology</span>
+                            <span class="legend-pill" style="--c:#ec4899">● Material</span>
+                            <span class="legend-pill" style="--c:#64748b">● Concept</span>
+                            <span class="legend-pill" style="--c:#c0152a">■ Paper</span>
+                            <span class="kg-count-chip" id="kg-graph-count-badge">0 nodes · 0 edges</span>
+                        </div>
+
+                        <!-- Cytoscape Container -->
+                        <div id="kg-cytoscape" class="kg-cytoscape-canvas"></div>
+
+                        <!-- Overlays -->
+                        <div id="kg-loading-overlay" class="kg-overlay" style="display:none;">
+                            <div class="kg-spinner"></div>
+                            <span>Querying Knowledge Graph...</span>
+                        </div>
+
+                        <div id="kg-empty-state" class="kg-overlay" style="display:none;">
+                            <div class="empty-icon">🕸️</div>
+                            <h3>No Knowledge Graph Data Found</h3>
+                            <p>Build a graph from an ingested document above or adjust your search filters to explore entities.</p>
+                        </div>
+
+                        <div id="kg-error-toast" class="kg-toast" style="display:none;"></div>
+                    </div>
+
+                    <!-- Evidence & Entity Inspector Drawer -->
+                    <div class="kg-inspector-drawer">
+                        <div class="inspector-card-header">
+                            <span class="inspector-title">Evidence & Entity Inspector</span>
+                        </div>
+                        <div class="inspector-card-body" id="kg-inspector-content">
+                            <div class="inspector-empty-state">
+                                <div class="inspector-empty-icon">🔍</div>
+                                <h4>Interactive Inspector</h4>
+                                <p>Click any entity node or directed relationship edge in the graph to inspect canonical properties, related concepts, and exact source sentence citations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── KNOWLEDGE COPILOT ─────────────────────────────── -->
+        <section id="knowledge-copilot" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Knowledge Copilot (RAG)</h2>
+                <p class="section-desc">Ask grounded questions against your indexed documents. Retrieves dense 384-D vector passages and provides exact source citations.</p>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="copilot-presets">
+                <span class="preset-label">Suggested Prompts:</span>
+                <button class="preset-chip" data-query="What are the key methodologies across all papers?">Methodology Comparison</button>
+                <button class="preset-chip" data-query="List the empirical datasets and accuracy benchmarks.">Datasets & Accuracy</button>
+                <button class="preset-chip" data-query="Summarize failure modes and limitations.">Limitations & Gaps</button>
+            </div>
+
+            <div class="card-panel">
+                <div class="input-group">
+                    <input type="text" id="copilot-query" class="dash-input" placeholder="Ask a question grounded in your ingested research...">
+                    <button class="btn-primary" id="btn-copilot-ask">Ask Copilot</button>
+                    <button class="btn-secondary" id="btn-copilot-sop">Extract SOP Checklist</button>
+                </div>
+            </div>
+
+            <div id="copilot-answer" class="feature-output"></div>
+        </section>
+
+        <!-- ── NLP LAB (PLAYGROUND) ─────────────────────────────── -->
+        <section id="nlp-lab" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>NLP Lab (Interactive Playground)</h2>
+                <p class="section-desc">Test spaCy NER, POS syntax tagging, sentiment & emotional tone analysis, TF-IDF keyphrase weights, and semantic cosine distance.</p>
+            </div>
+
+            <!-- Preset Samples -->
+            <div class="nlp-presets">
+                <span class="preset-label">Load Preset Text:</span>
+                <button class="preset-chip" id="preset-acoustic">Acoustic Anomaly Paper</button>
+                <button class="preset-chip" id="preset-clinical">Biomedical Clinical Note</button>
+                <button class="preset-chip" id="preset-financial">Financial Earnings Call</button>
+            </div>
+
+            <div class="card-panel">
+                <textarea id="nlp-text" class="dash-textarea" placeholder="Paste or type any text to analyze..."></textarea>
+                <div class="nlp-actions-row">
+                    <div class="summary-slider-wrap">
+                        <label class="field-label">Summary Sentences: <span id="summary-length-val">3</span></label>
+                        <input type="range" id="summary-length-slider" min="1" max="6" value="3" class="dash-slider">
+                    </div>
+                    <button class="btn-primary" id="btn-nlp-analyze">Execute Deep NLP Analysis</button>
+                </div>
+            </div>
+
+            <!-- Cosine Similarity Mini-Tool -->
+            <div class="card-panel" style="margin-top: 1.5rem;">
+                <h3 class="panel-subtitle">Semantic Cosine Distance Calculator</h3>
+                <div class="sim-grid">
+                    <input type="text" id="sim-text-1" class="dash-input" placeholder="Sentence A (e.g., The machine bearing showed severe mechanical degradation.)" value="The machine bearing showed severe mechanical degradation.">
+                    <input type="text" id="sim-text-2" class="dash-input" placeholder="Sentence B (e.g., Acoustic vibration detected blade unbalance and motor fault.)" value="Acoustic vibration detected blade unbalance and motor fault.">
+                    <button class="btn-secondary" id="btn-calc-sim">Compute Similarity</button>
+                </div>
+                <div id="sim-result" class="sim-score-bar-wrap"></div>
+            </div>
+
+            <div id="nlp-results" class="feature-output"></div>
+        </section>
+
+        <!-- ── AGENT WORKFLOWS ─────────────────────────────── -->
+        <section id="agent-workflows" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Autonomous Agent Workflows</h2>
+                <p class="section-desc">Run multi-step autonomous pipelines that orchestrate ingestion, entity mapping, stance verification, and report synthesis.</p>
+            <!-- Flagship Multi-Agent Research Collaboration Feature Banner -->
+            <div style="background: linear-gradient(135deg, rgba(192,21,42,0.06) 0%, rgba(59,130,246,0.06) 100%); border: 1px solid rgba(192,21,42,0.25); border-radius: 14px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+                        <span style="font-size:0.72rem; font-weight:800; background:var(--crimson-core); color:#fff; padding:0.2rem 0.5rem; border-radius:12px; letter-spacing:0.05em;">FLAGSHIP PIPELINE</span>
+                        <h3 style="font-size:1.1rem; font-weight:800; color:#2F0909; margin:0;">Multi-Agent Research Collaboration Team</h3>
+                    </div>
+                    <p style="font-size:0.85rem; color:rgba(47,9,9,0.7); margin:0; max-width:650px;">
+                        Researcher (🔬) → Reviewer (🔍) → Experiment Designer (⚗️) → Statistician (📊). Sequential autonomous collaboration with accumulated context handoffs and publication-ready intelligence reporting.
+                    </p>
+                </div>
+                <a href="#multi-agent-crew" class="btn-primary nav-link" data-target="multi-agent-crew" style="display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none;">
+                    Open Research Team ➔
+                </a>
+            </div>
+
+            <div class="workflow-cards-grid">
+                <!-- Workflow 1 -->
+                <div class="wf-pipeline-card">
+                    <div class="wf-card-top">
+                        <div class="wf-badge">Pipeline 01</div>
+                        <h3 class="wf-title">Deep Research & Synthesis</h3>
+                    </div>
+                    <p class="wf-desc">Ingests all project files, constructs entity knowledge graphs, compares cross-paper methodologies, and compiles an executive literature review.</p>
+                    <div class="wf-steps-preview">
+                        <span>1. Ingestion & Chunking</span>
+                        <span>2. Entity & Claim Mining</span>
+                        <span>3. Cross-Paper Synthesis</span>
+                        <span>4. Executive Draft</span>
+                    </div>
+                    <button class="btn-primary wf-run-btn" data-workflow="deep_research">Run Deep Research</button>
+                </div>
+
+                <!-- Workflow 2 -->
+                <div class="wf-pipeline-card">
+                    <div class="wf-card-top">
+                        <div class="wf-badge">Pipeline 02</div>
+                        <h3 class="wf-title">Fact-Checking & Stance Audit</h3>
+                    </div>
+                    <p class="wf-desc">Mines factual and numerical assertions, queries the vector corpus for corroborating evidence, and outputs a certified verification scorecard.</p>
+                    <div class="wf-steps-preview">
+                        <span>1. Assertive Claim Extraction</span>
+                        <span>2. Semantic Retrieval</span>
+                        <span>3. Stance Classification</span>
+                        <span>4. Verification Scorecard</span>
+                    </div>
+                    <button class="btn-primary wf-run-btn" data-workflow="fact_checking">Run Fact-Checking Audit</button>
+                </div>
+
+                <!-- Workflow 3 -->
+                <div class="wf-pipeline-card">
+                    <div class="wf-card-top">
+                        <div class="wf-badge">Pipeline 03</div>
+                        <h3 class="wf-title">Operational SOP Extraction</h3>
+                    </div>
+                    <p class="wf-desc">Parses technical and maintenance manuals to extract step-by-step Standard Operating Procedures, safety prerequisites, and risk mitigations.</p>
+                    <div class="wf-steps-preview">
+                        <span>1. Procedural Syntax Parsing</span>
+                        <span>2. Hardware Pre-requisites</span>
+                        <span>3. Threshold Alarm Gates</span>
+                        <span>4. Action Checklist</span>
+                    </div>
+                    <button class="btn-primary wf-run-btn" data-workflow="sop_extraction">Run SOP Extraction</button>
+                </div>
+            </div>
+
+            <!-- Workflow Execution Live Stream -->
+            <div id="workflow-execution-panel" class="card-panel" style="display:none; margin-top:2rem;">
+                <div class="wf-exec-header">
+                    <h3 class="panel-subtitle" id="wf-exec-title">Executing Pipeline</h3>
+                    <span class="wf-exec-status" id="wf-exec-badge">RUNNING</span>
+                </div>
+                <div class="wf-stepper" id="wf-stepper"></div>
+                <div class="wf-verdict-box" id="wf-verdict-box"></div>
+            </div>
+        </section>
+
+        <!-- ── MULTI-AGENT RESEARCH COLLABORATION PIPELINE ─── -->
+        <section id="multi-agent-crew" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Multi-Agent Research Collaboration Team</h2>
+                <p class="section-desc">Four specialized AI agents collaborate sequentially—synthesizing literature findings, conducting peer review, designing controlled experiments, and formulating statistical validation frameworks.</p>
+            </div>
+
+            <!-- Agents Roster -->
+            <div class="crew-agents-roster">
+                <div class="crew-agent-badge-card" style="--agent-accent:#3B82F6; --agent-bg:rgba(59,130,246,0.1);">
+                    <div class="crew-agent-avatar">🔬</div>
+                    <div class="crew-agent-meta">
+                        <span class="crew-agent-role">Research Analyst</span>
+                        <span class="crew-agent-desc">Literature survey, key papers & gaps</span>
+                    </div>
+                </div>
+                <div class="crew-agent-badge-card" style="--agent-accent:#F59E0B; --agent-bg:rgba(245,158,11,0.1);">
+                    <div class="crew-agent-avatar">🔍</div>
+                    <div class="crew-agent-meta">
+                        <span class="crew-agent-role">Critical Reviewer</span>
+                        <span class="crew-agent-desc">Methodology audit & bias detection</span>
+                    </div>
+                </div>
+                <div class="crew-agent-badge-card" style="--agent-accent:#10B981; --agent-bg:rgba(16,185,129,0.1);">
+                    <div class="crew-agent-avatar">⚗️</div>
+                    <div class="crew-agent-meta">
+                        <span class="crew-agent-role">Experiment Designer</span>
+                        <span class="crew-agent-desc">Hypothesis & variable protocol</span>
+                    </div>
+                </div>
+                <div class="crew-agent-badge-card" style="--agent-accent:#8B5CF6; --agent-bg:rgba(139,92,246,0.1);">
+                    <div class="crew-agent-avatar">📊</div>
+                    <div class="crew-agent-meta">
+                        <span class="crew-agent-role">Statistical Analyst</span>
+                        <span class="crew-agent-desc">Power analysis, tests & metrics</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Input Card -->
+            <div class="crew-input-card">
+                <div class="crew-input-card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Dispatch Research Collaboration Team
+                </div>
+                <div class="crew-input-card-sub">
+                    Enter any scientific topic or research question. The agents will execute sequentially with accumulated context handoffs.
+                </div>
+                <div class="crew-input-row">
+                    <input type="text" id="crew-topic-input" class="crew-topic-input" placeholder="e.g. Self-Supervised Vision Transformers for Medical Imaging" value="Self-Supervised Vision Transformers for Medical Imaging">
+                    <button id="btn-launch-crew" class="btn-primary" style="display:flex; align-items:center; gap:0.5rem; white-space:nowrap;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Launch Multi-Agent Pipeline
+                    </button>
+                </div>
+                <div class="crew-presets-container">
+                    <span class="crew-preset-label">Suggested Topics:</span>
+                    <span class="crew-preset-pill" data-topic="Quantum Error Correction in Superconducting Qubits">Quantum Error Correction</span>
+                    <span class="crew-preset-pill" data-topic="Self-Supervised Vision Transformers for Medical Imaging">Vision Transformers in Histopathology</span>
+                    <span class="crew-preset-pill" data-topic="Sparse Mixture-of-Experts Routing Stability in Large Language Models">Sparse MoE Stability</span>
+                    <span class="crew-preset-pill" data-topic="Diffusion Models for De Novo Molecular Drug Discovery">Molecular Diffusion Models</span>
+                    <span class="crew-preset-pill" data-topic="Graph Neural Networks for Zero-Shot Knowledge Graph Reasoning">GNN Zero-Shot Reasoning</span>
+                </div>
+            </div>
+
+            <!-- Stepper Progress Tracker -->
+            <div id="crew-stepper-container" class="crew-stepper-container">
+                <div class="crew-stepper-header">
+                    <div class="crew-stepper-title">
+                        <span>🤝</span>
+                        <span>Multi-Agent Collaborative Flow</span>
+                    </div>
+                    <div id="crew-stepper-status" class="crew-stepper-status running">PIPELINE ACTIVE</div>
+                </div>
+
+                <div class="crew-stepper-track">
+                    <div id="crew-track-progress" class="crew-stepper-track-progress"></div>
+
+                    <div class="crew-step-node active" id="crew-step-researcher">
+                        <div class="crew-step-icon-circle" style="color:#3B82F6;">🔬</div>
+                        <div class="crew-step-label">1. Researcher</div>
+                    </div>
+
+                    <div class="crew-step-node" id="crew-step-reviewer">
+                        <div class="crew-step-icon-circle" style="color:#F59E0B;">🔍</div>
+                        <div class="crew-step-label">2. Reviewer</div>
+                    </div>
+
+                    <div class="crew-step-node" id="crew-step-experiment_designer">
+                        <div class="crew-step-icon-circle" style="color:#10B981;">⚗️</div>
+                        <div class="crew-step-label">3. Experiment Designer</div>
+                    </div>
+
+                    <div class="crew-step-node" id="crew-step-statistician">
+                        <div class="crew-step-icon-circle" style="color:#8B5CF6;">📊</div>
+                        <div class="crew-step-label">4. Statistician</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Agent Results -->
+            <div id="crew-results-container" class="crew-results-grid"></div>
+
+            <!-- Final Consolidated Report -->
+            <div id="crew-report-container" class="crew-report-card" style="display:none;">
+                <div class="crew-report-top">
+                    <div class="crew-report-title">
+                        <span>📋</span>
+                        <span>Synthesized Multi-Agent Intelligence Report</span>
+                    </div>
+                    <div class="crew-report-actions">
+                        <button id="btn-copy-crew-report" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.75rem;">📋 Copy Markdown</button>
+                        <button id="btn-download-crew-report" class="btn-primary" style="padding:0.5rem 1rem; font-size:0.75rem;">📥 Download Report (.md)</button>
+                    </div>
+                </div>
+                <div id="crew-final-report-text" class="crew-report-markdown"></div>
+            </div>
+
+            <!-- Past Runs History -->
+            <div class="crew-history-card">
+                <div class="crew-input-card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Recent Collaborative Pipeline Runs
+                </div>
+                <div class="crew-input-card-sub">
+                    Click "Inspect" on any past run to review all 4 agent outputs and the generated intelligence report.
+                </div>
+                <div id="crew-history-list" class="crew-history-list">
+                    <div style="font-size:0.82rem; color:rgba(47,9,9,0.5); padding:0.5rem 0;">Loading past runs...</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ── REPORT STUDIO ─────────────────────────────── -->
+        <section id="report-studio" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Report Studio</h2>
+                <p class="section-desc">Generate, edit, and export publication-ready Literature Reviews, Executive Briefs, Benchmark Tables, and SOP manuals.</p>
+            </div>
+
+            <div class="card-panel">
+                <div class="report-controls">
+                    <div class="report-type-select-wrap">
+                        <label class="field-label">Report Format</label>
+                        <select id="report-type-select" class="dash-select">
+                            <option value="literature_review">Comprehensive Literature Review</option>
+                            <option value="executive_brief">Executive Decision Brief</option>
+                            <option value="comparative_benchmark">Technical Benchmark & Evaluation Matrix</option>
+                            <option value="sop_manual">Operational SOP & Deployment Manual</option>
+                        </select>
+                    </div>
+                    <div class="report-title-input-wrap">
+                        <label class="field-label">Report Title</label>
+                        <input type="text" id="report-custom-title" class="dash-input" placeholder="Custom Title (optional)">
+                    </div>
+                    <div class="report-btn-wrap">
+                        <button class="btn-primary" id="btn-generate-report">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor & Preview -->
+            <div id="report-editor-card" class="card-panel" style="margin-top:1.5rem; display:none;">
+                <div class="report-toolbar">
+                    <span class="report-toolbar-title" id="report-view-title">Generated Draft</span>
+                    <div class="report-toolbar-actions">
+                        <button class="btn-secondary" id="btn-copy-report">Copy Markdown</button>
+                        <button class="btn-primary" id="btn-download-report-md">Download .md</button>
+                    </div>
+                </div>
+                <textarea id="report-markdown-editor" class="report-editor-textarea" rows="22"></textarea>
+            </div>
+        </section>
+
+        <!-- ── ABOUT & USER GUIDE ─────────────────────────── -->
+        <section id="about-project" class="dashboard-section">
+            <!-- Hero Banner -->
+            <div class="about-hero-banner">
+                <div class="about-hero-badge">CIPHER Platform Architecture &amp; User Manual</div>
+                <h1 class="about-hero-title">Autonomous Agentic AI Scientific Research &amp; Intelligence System</h1>
+                <p class="about-hero-desc">
+                    CIPHER is a state-of-the-art, local-first scientific discovery and intelligence platform designed to eliminate research hallucinations, automate complex literature reviews, and provide mathematically grounded evidence verification. Combining dense 384-D vector retrieval, multi-agent peer review collaboration, force-directed knowledge graph visualization, and deep NLP syntax extraction, CIPHER compresses weeks of manual literature synthesis into seconds of verifiable empirical discovery.
+                </p>
+                <div class="about-pillars-row">
+                    <div class="about-pillar-chip">
+                        <div class="about-pillar-icon" style="font-size:0.95rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">01</div>
+                        <div>
+                            <strong>Local &amp; Privacy-First</strong>
+                            <small>Zero data leaks, offline embedding</small>
+                        </div>
+                    </div>
+                    <div class="about-pillar-chip">
+                        <div class="about-pillar-icon" style="font-size:0.95rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">02</div>
+                        <div>
+                            <strong>Source-Grounded RAG</strong>
+                            <small>Verbatim excerpts &amp; cosine scores</small>
+                        </div>
+                    </div>
+                    <div class="about-pillar-chip">
+                        <div class="about-pillar-icon" style="font-size:0.95rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">03</div>
+                        <div>
+                            <strong>4-Agent Collaboration</strong>
+                            <small>Researcher, Reviewer, Designer, Statistician</small>
+                        </div>
+                    </div>
+                    <div class="about-pillar-chip">
+                        <div class="about-pillar-icon" style="font-size:0.95rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">04</div>
+                        <div>
+                            <strong>Interactive Knowledge Graph</strong>
+                            <small>Cytoscape entity &amp; relation maps</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Audience / Who Is CIPHER For -->
+            <div class="about-section-subhead">
+                Target Users &amp; Professional Applications
+            </div>
+            <div class="about-users-grid">
+                <div class="about-user-card">
+                    <div class="about-user-header">
+                        <div class="about-user-avatar" style="font-size:0.85rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">AC</div>
+                        <div>
+                            <h3 class="about-user-title">Academic Researchers &amp; PhDs</h3>
+                            <span class="about-user-badge">Literature Discovery</span>
+                        </div>
+                    </div>
+                    <p class="about-user-desc">
+                        Scholars managing hundreds of academic PDFs who need to rapidly extract paper structures, map citations, compare disparate methodologies, and discover unexplored research gaps without reading hundreds of pages manually.
+                    </p>
+                    <div class="about-user-gain">✓ 10x faster literature reviews with citation-grounded RAG</div>
+                </div>
+
+                <div class="about-user-card">
+                    <div class="about-user-header">
+                        <div class="about-user-avatar" style="font-size:0.85rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">RD</div>
+                        <div>
+                            <h3 class="about-user-title">R&amp;D Scientists &amp; Engineers</h3>
+                            <span class="about-user-badge">Industrial &amp; Applied Science</span>
+                        </div>
+                    </div>
+                    <p class="about-user-desc">
+                        Engineering teams (signal processing, acoustic anomaly detection, predictive maintenance, aerospace, biomedical) requiring standardized deployment SOPs, empirical metrics verification, and reproducible hardware configurations.
+                    </p>
+                    <div class="about-user-gain">✓ Automated SOP extraction &amp; benchmark matrices</div>
+                </div>
+
+                <div class="about-user-card">
+                    <div class="about-user-header">
+                        <div class="about-user-avatar" style="font-size:0.85rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">DS</div>
+                        <div>
+                            <h3 class="about-user-title">Data Scientists &amp; ML Practitioners</h3>
+                            <span class="about-user-badge">Empirical Validation</span>
+                        </div>
+                    </div>
+                    <p class="about-user-desc">
+                        Machine learning engineers comparing benchmark models (GBDT vs Autoencoders, F1 scores, ROC-AUC), identifying dataset distributions, formulating statistical hypothesis tests, and auditing cross-paper assertions.
+                    </p>
+                    <div class="about-user-gain">✓ Statistical power calculation &amp; claim stance auditing</div>
+                </div>
+
+                <div class="about-user-card">
+                    <div class="about-user-header">
+                        <div class="about-user-avatar" style="font-size:0.85rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">EV</div>
+                        <div>
+                            <h3 class="about-user-title">Reviewers, Analysts &amp; Decision Makers</h3>
+                            <span class="about-user-badge">Fact-Checking &amp; Briefs</span>
+                        </div>
+                    </div>
+                    <p class="about-user-desc">
+                        Technical directors, patent evaluators, and policy analysts who must verify claims against empirical evidence, identify contradictory findings across literature, and generate executive decision briefs on tight deadlines.
+                    </p>
+                    <div class="about-user-gain">✓ Supports vs Contradicts stance matrix in 1-click</div>
+                </div>
+            </div>
+
+            <!-- Problem vs Solution Comparison -->
+            <div class="about-section-subhead">
+                How CIPHER Solves the Core Scientific Research Crisis
+            </div>
+            <div class="about-compare-grid">
+                <div class="about-compare-card old-way">
+                    <h3 class="about-compare-title" style="color:#b91c1c;">
+                        The Traditional Research Bottleneck
+                    </h3>
+                    <ul class="about-compare-list">
+                        <li><strong>Cognitive Overload:</strong> Researchers spend 40+ hours per month reading repetitive PDFs, manually copying tables, and hunting for dataset references.</li>
+                        <li><strong>Public LLM Hallucinations:</strong> Standard chatbots invent fictitious papers, fabricate DOIs, and misrepresent empirical accuracy metrics.</li>
+                        <li><strong>Fragmented Information Silos:</strong> Cross-document relationships (e.g., Paper A contradicting Paper B's baseline) remain completely hidden in disconnected PDF files.</li>
+                        <li><strong>Single-Perspective Blindspots:</strong> Without multi-agent adversarial peer review, statistical weaknesses and evaluation flaws slip through undetected.</li>
+                        <li><strong>Tedious Report Drafting:</strong> Writing comprehensive literature reviews and deployment manuals is manual, repetitive, and prone to omission.</li>
+                    </ul>
+                </div>
+
+                <div class="about-compare-card cipher-way">
+                    <h3 class="about-compare-title" style="color:#047857;">
+                        The CIPHER Agentic AI Solution
+                    </h3>
+                    <ul class="about-compare-list">
+                        <li><strong>Instant Multi-Paper Ingestion:</strong> Automated PDF, DOCX, TXT, and Web parsing with 384-D dense vector embedding and spaCy entity tagging.</li>
+                        <li><strong>Strict Verbatim Grounding:</strong> Knowledge Copilot returns exact passage excerpts, document source names, and mathematical cosine scores.</li>
+                        <li><strong>Interactive Knowledge Graph:</strong> Cytoscape engine visually exposes cross-document links, shared methodology hubs, and citation networks.</li>
+                        <li><strong>4-Agent Collaborative Flow:</strong> Autonomous Researcher, Reviewer, Experiment Designer, and Statistician simulate a full research lab.</li>
+                        <li><strong>Automated Report Studio:</strong> Instantly compiles publication-ready literature reviews, executive briefs, and SOPs with markdown export.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recommended 4-Step Workflow -->
+            <div class="about-section-subhead">
+                Recommended End-to-End Workflow Guide
+            </div>
+            <div class="about-quickstart-track">
+                <div class="about-quickstart-card">
+                    <span class="about-qs-step-badge">Phase 1</span>
+                    <h4 class="about-qs-title">1. Ingest Knowledge</h4>
+                    <p class="about-qs-desc">Upload research papers (PDF, DOCX, TXT) or import web article URLs. CIPHER auto-chunks text and computes 384-D vector embeddings.</p>
+                </div>
+                <div class="about-quickstart-card">
+                    <span class="about-qs-step-badge">Phase 2</span>
+                    <h4 class="about-qs-title">2. Explore &amp; Ask</h4>
+                    <p class="about-qs-desc">Query Knowledge Copilot for source-grounded answers, extract SOP checklists, and inspect entity relationships in the Knowledge Graph.</p>
+                </div>
+                <div class="about-quickstart-card">
+                    <span class="about-qs-step-badge">Phase 3</span>
+                    <h4 class="about-qs-title">3. Verify &amp; Collaborate</h4>
+                    <p class="about-qs-desc">Run an Evidence Stance Audit to verify claims (Supports vs Contradicts) and launch the 4-Agent Collaborative Team for peer-reviewed research.</p>
+                </div>
+                <div class="about-quickstart-card">
+                    <span class="about-qs-step-badge">Phase 4</span>
+                    <h4 class="about-qs-title">4. Generate &amp; Export</h4>
+                    <p class="about-qs-desc">Open Report Studio, select your desired format (Literature Review, Executive Brief, SOP), and copy or download the markdown document.</p>
+                </div>
+            </div>
+
+            <!-- Comprehensive Feature-by-Feature Deep Dive -->
+            <div class="about-section-subhead">
+                Complete Feature-by-Feature Guide &amp; Instructions
+            </div>
+            <div class="about-features-container">
+
+                <!-- Feature 1: Knowledge Library -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">01</div>
+                            <div>
+                                <h3 class="about-feat-name">1. Knowledge Library</h3>
+                                <div class="about-feat-tagline">Secure Document Ingestion, 384-D Tensor Vector Indexing &amp; NER Processing</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(192,21,42,0.1); color:#C0152A; font-weight:700;">Foundation Module</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Manual reading and filing of unstructured research documents is slow, fragmented, and unsearchable. Raw files cannot be queried with semantic precision by standard search.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Automatically parses text structure, extracts named entities, chunks passages, and generates dense vector embeddings stored in a local SQLite database.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Navigate to <strong>Knowledge Library</strong> from the sidebar.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Drag and drop or browse to select your research files (PDF, DOCX, TXT, MD, CSV).</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Click <strong>Upload &amp; Index</strong>. The live progress bar monitors Parse &rarr; Chunk &rarr; Entity extraction.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> View the ingested document cards showing format badges, word count, passage count, and indexed status.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Import & Web Research -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">02</div>
+                            <div>
+                                <h3 class="about-feat-name">2. Import &amp; Web Research</h3>
+                                <div class="about-feat-tagline">Automated Web Ingestion, Clean HTML Parsing &amp; Real-Time Vector Storage</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(59,130,246,0.1); color:#1d4ed8; font-weight:700;">Web Scraper</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Valuable research findings, preprints, and engineering technical blogs are trapped behind web clutter, ads, navigation scripts, and non-standard HTML layouts.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Cleans HTML via DOM filters, extracts main body text, computes dense embeddings, and injects the article directly into your indexed project workspace.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Open <strong>Import &amp; Web Research</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Paste any scientific article, blog, or documentation URL into the input field.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Click <strong>Fetch &amp; Analyze</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Review the clean article excerpt, word count, and passage embedding confirmation. It is now immediately available to Copilot and Evidence Explorer.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Knowledge Copilot (RAG) -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">03</div>
+                            <div>
+                                <h3 class="about-feat-name">3. Knowledge Copilot (Source-Grounded RAG)</h3>
+                                <div class="about-feat-tagline">Dense 384-D Vector Retrieval, Verbatim Source Citations &amp; SOP Extraction</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(16,185,129,0.1); color:#047857; font-weight:700;">Zero Hallucinations</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Standard AI assistants fabricate facts, invent non-existent papers, and provide unverified answers without traceable sources, making them unusable for real scientific research.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Executes cosine similarity search over your exact document chunks, synthesizes answers strictly from top-matching passages, and provides exact source citations with similarity scores.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Go to <strong>Knowledge Copilot</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Click a preset chip (e.g., <em>Methodology Comparison</em>, <em>Datasets &amp; Accuracy</em>) or type a custom question.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Click <strong>Ask Copilot</strong> to view the answer synthesis and the exact source citations with verbatim quotes.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Click <strong>Extract SOP Checklist</strong> to compile actionable Standard Operating Procedures across all documents.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Research Intelligence -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">04</div>
+                            <div>
+                                <h3 class="about-feat-name">4. Research Intelligence</h3>
+                                <div class="about-feat-tagline">Deep Scientific Structure Extraction &amp; Cross-Paper Comparative Synthesis Matrix</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(139,92,246,0.1); color:#6d28d9; font-weight:700;">Multi-Paper Matrix</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Comparing 10 or 20 academic papers requires hours of manual cross-referencing to find what methodology each paper used, what datasets were tested, and what their limitations were.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Extracts 6 structured dimensions per paper (Methodology, Datasets, Metrics, Findings, Limitations, Future Work) and synthesizes a comparative consensus matrix.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Navigate to <strong>Research Intelligence</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Select any document from the dropdown and click <strong>Extract Paper Structure</strong> to view its 6-factor scientific breakdown.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Click <strong>Generate Multi-Paper Comparison Matrix</strong> to synthesize findings and compare all papers side-by-side.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Evidence Explorer -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">05</div>
+                            <div>
+                                <h3 class="about-feat-name">5. Evidence Explorer</h3>
+                                <div class="about-feat-tagline">Empirical Claim Extraction, Stance Classification &amp; Contradiction Detection</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(245,158,11,0.1); color:#b45309; font-weight:700;">Fact-Checking</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Contradictions, flawed assumptions, and unsupported claims across different papers are nearly impossible to catch manually, leading to flawed experimental designs.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Scans passages for assertive claims and evaluates stance relationships (Supports, Contradicts, Neutral) with confidence metrics and semantic similarity.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Navigate to <strong>Evidence Explorer</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> <em>Option A (Project Audit):</em> Leave input empty and click <strong>Run Evidence Stance Audit</strong> to review all mined claims and their cross-document verdicts.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> <em>Option B (Hypothesis Check):</em> Enter a specific claim (e.g., <em>"Acoustic sensing detects mechanical defects"</em>) to see corroborating or contradicting passages.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Knowledge Graph Engine -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">06</div>
+                            <div>
+                                <h3 class="about-feat-name">6. Knowledge Graph Engine</h3>
+                                <div class="about-feat-tagline">Cytoscape.js Force-Directed Interactive Graph, Entity Clustering &amp; Citation Inspector</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(59,130,246,0.1); color:#1d4ed8; font-weight:700;">Graph Visualization</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Linear text reading hides multi-hop conceptual relationships, shared datasets between disparate authors, and overarching architectural paradigms.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Renders an interactive 2D physics graph where papers, methods, metrics, and entities form interconnected semantic clusters with traceable sentence citations.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Open <strong>Knowledge Graph Engine</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Zoom with mouse wheel, pan across the canvas, and click any node to highlight its connected relationships.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Use the search box or entity filters (Task, Method, Metric, Dataset) to focus on specific domains.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Inspect the right-hand panel for exact node properties, confidence scores, and verbatim citations.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 7: Multi-Agent Research Collaboration Team -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">07</div>
+                            <div>
+                                <h3 class="about-feat-name">7. Multi-Agent Research Collaboration Team</h3>
+                                <div class="about-feat-tagline">Autonomous 4-Stage Pipeline: Researcher &rarr; Reviewer &rarr; Experiment Designer &rarr; Statistician</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(192,21,42,0.1); color:#C0152A; font-weight:700;">Autonomous Team</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Conducting research in isolation causes bias, overlooking methodology critiques, missing experimental control variables, and failing to verify statistical significance.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Deploys 4 specialized autonomous agents that sequentially research literature, critique methodology, formulate controlled experiments, and compute statistical power.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Go to <strong>Multi-Agent Research Collaboration Team</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Enter your research goal or click a preset chip (e.g., <em>Acoustic Anomaly Detection</em>).</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Click <strong>Launch Collaborative Team</strong>. Watch the live progress stepper transition across all 4 agents.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Review individual agent dossiers (hypotheses, critiques, test plans, power metrics) and copy or download the final synthesized intelligence report.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 8: Report Studio -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">08</div>
+                            <div>
+                                <h3 class="about-feat-name">8. Report Studio</h3>
+                                <div class="about-feat-tagline">Publication-Ready Markdown Reports, Executive Briefs, Benchmark Tables &amp; SOP Manuals</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(16,185,129,0.1); color:#047857; font-weight:700;">Export Engine</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Transforming complex research findings into polished, publication-ready literature reviews, executive briefs, and deployment protocols takes days of drafting.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Generates complete structured markdown documents grounded in your ingested research, featuring live editing, 1-click clipboard copy, and file downloads.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Navigate to <strong>Report Studio</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Select your format (Comprehensive Literature Review, Executive Decision Brief, Technical Benchmark, SOP Manual).</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Optionally enter a custom title, then click <strong>Generate Report</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Edit the markdown draft directly in the editor, and click <strong>Copy Markdown</strong> or <strong>Download .md</strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 9: NLP Lab -->
+                <div class="about-feature-box">
+                    <div class="about-feat-header">
+                        <div class="about-feat-header-left">
+                            <div class="about-feat-icon-box" style="font-size:1rem; font-weight:800; color:var(--crimson-core); font-family:var(--font-mono);">09</div>
+                            <div>
+                                <h3 class="about-feat-name">9. NLP Lab (Interactive Playground)</h3>
+                                <div class="about-feat-tagline">Real-Time Linguistic Parsing, POS Syntax, Emotion Analysis &amp; Cosine Calculator</div>
+                            </div>
+                        </div>
+                        <span class="tag" style="background:rgba(245,158,11,0.1); color:#b45309; font-weight:700;">Linguistic Suite</span>
+                    </div>
+                    <div class="about-feat-body">
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">Problem It Solves</div>
+                            <p>Researchers need to quickly evaluate raw text snippets, verify terminology extractability, check emotional tone, and calculate semantic cosine distance without ingesting whole files.</p>
+                            <p style="margin-top:0.5rem; font-weight:600; color:#047857;">CIPHER Solution: Provides an interactive sandbox running local spaCy pipelines for entity extraction, POS tagging, salience graph summarization, and cosine distance computation.</p>
+                        </div>
+                        <div class="about-feat-subblock">
+                            <div class="about-feat-subblock-title">How to Use It</div>
+                            <div class="about-how-steps">
+                                <div class="about-how-step"><span class="about-how-step-num">1</span> Open <strong>NLP Lab</strong>.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">2</span> Paste custom text or click a preset chip (<em>Acoustic Anomaly Paper</em>, <em>Biomedical Note</em>, <em>Financial Call</em>).</div>
+                                <div class="about-how-step"><span class="about-how-step-num">3</span> Adjust the summary length slider and click <strong>Execute Deep NLP Analysis</strong> to view entities, syntax, and sentiments.</div>
+                                <div class="about-how-step"><span class="about-how-step-num">4</span> Use the <strong>Semantic Cosine Distance Calculator</strong> at the bottom to test cosine similarity between any two arbitrary sentences.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ── SETTINGS & PRIVACY ─────────────────────────── -->
+        <section id="settings-privacy" class="dashboard-section">
+            <div class="section-head">
+                <h2 class="section-header"><span class="header-dot"></span>Settings & Engine Health</h2>
+                <p class="section-desc">Inspect local AI inference engines, model backends, operator credentials, and storage status.</p>
+            </div>
+            
+            <div class="profile-form">
+                <div class="settings-card">
+                    <div class="settings-card-label">Active Inference Engine</div>
+                    <div class="settings-card-body">
+                        <div class="ollama-status-row">
+                            <div class="ollama-dot-lg" id="settings-status-dot"></div>
+                            <div class="ollama-status-info">
+                                <span class="ollama-status-label" id="settings-status-text">NLP CORE ACTIVE</span>
+                                <span class="ollama-model-label">Model Engine: <code id="settings-model-name">CIPHER-NLP Core (spaCy + MiniLM)</code></span>
+                            </div>
+                        </div>
+                        <p class="settings-hint">CIPHER operates 100% locally on your machine. Text parsing, vector embeddings, semantic ranking, and document intelligence execute in local Python processes with zero external data transmission.</p>
+                    </div>
+                </div>
+
+                <div class="card-panel" style="margin-top:1.5rem;">
+                    <div class="input-group">
+                        <label class="field-label">Operator Handle</label>
+                        <input type="text" id="profile-username" class="dash-input" placeholder="Your Operator Name" value="Operator">
+                        <button class="btn-primary" id="btn-save-profile">Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════
+         RIGHT-SIDE SCI-FI HUD & NLP APPLICATIONS SHOWCASE
+         ═══════════════════════════════════════════════════════ -->
+    <aside class="scifi-nlp-nexus" id="scifi-nlp-nexus">
+        <!-- Sci-Fi HUD Header -->
+        <div class="nexus-header">
+            <div class="nexus-title-wrap">
+                <span class="nexus-radar-dot"></span>
+                <span class="nexus-title">NEURAL VISOR</span>
+                <span class="nexus-badge" id="nexus-mode-badge">IDLE</span>
+            </div>
+            <button class="nexus-collapse-btn" id="nexus-close-btn" title="Collapse HUD">✕</button>
+        </div>
+
+        <!-- 3D Holographic Canvas -->
+        <div class="nexus-canvas-container">
+            <canvas id="scifi-canvas" width="400" height="230"></canvas>
+            <div class="canvas-scanline-overlay"></div>
+            <div class="canvas-hud-corner corner-tl"></div>
+            <div class="canvas-hud-corner corner-tr"></div>
+            <div class="canvas-hud-corner corner-bl"></div>
+            <div class="canvas-hud-corner corner-br"></div>
+            
+            <div class="canvas-hud-telemetry-badge">
+                <span class="hud-fps-text" id="hud-fps">60 FPS</span>
+                <span class="hud-tensors-text" id="hud-tensor-state">TENSOR: 384-D</span>
+            </div>
+        </div>
+
+        <!-- Live Background Telemetry Display -->
+        <div class="nexus-telemetry-box" id="nexus-telemetry-box">
+            <div class="telemetry-step-label">
+                <span class="pulse-icon">▶</span>
+                <span id="nexus-step-text">STANDBY // NEURAL RUNTIME READY</span>
+            </div>
+
+            <!-- Dynamic Telemetry Meters -->
+            <div class="telemetry-metrics-grid">
+                <div class="telemetry-pill">
+                    <span class="t-label">TOKENS/SEC</span>
+                    <span class="t-val" id="hud-token-rate">18,420</span>
+                </div>
+                <div class="telemetry-pill">
+                    <span class="t-label">ATTN HEAD 04</span>
+                    <span class="t-val" id="hud-attn-score">0.941</span>
+                </div>
+                <div class="telemetry-pill">
+                    <span class="t-label">NORM ||V||</span>
+                    <span class="t-val" id="hud-vector-norm">1.000</span>
+                </div>
+                <div class="telemetry-pill">
+                    <span class="t-label">LATENCY</span>
+                    <span class="t-val" id="hud-latency-ms">18ms</span>
+                </div>
+            </div>
+
+            <!-- Background Task Progress Bar -->
+            <div class="nexus-progress-track">
+                <div class="nexus-progress-bar" id="nexus-progress-fill" style="width: 25%;"></div>
+            </div>
+        </div>
+
+        <!-- NLP Applications & Uses Showcase -->
+        <div class="nexus-apps-section">
+            <div class="nexus-section-title">
+                <span>NLP APPLICATIONS & REAL-WORLD USES</span>
+                <span class="nexus-live-tag">LIVE HUD</span>
+            </div>
+
+            <!-- Application Cards Deck -->
+            <div class="active-pipeline-view" id="active-pipeline-view">
+                <div class="pipeline-feature-tag" id="visualizer-feature-title">
+                    <span>⚡</span> <span id="vis-feature-name">Standby // Ready</span>
+                </div>
+                <div id="pipeline-steps-list">
+                    <!-- Dynamic process steps rendered here -->
+                    <div class="pipeline-step-item active">
+                        <div class="pipeline-step-dot">1</div>
+                        <div class="pipeline-step-body">
+                            <div class="pipeline-step-name">Neural Runtime Standby</div>
+                            <div class="pipeline-step-desc">Listening for user interactions across Research, NLP Lab, Ingestion & Copilot.</div>
+                            <span class="pipeline-step-badge">Engine: Local spaCy + MiniLM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nexus-section-title" style="margin-top: 1rem;">
+                <span>NLP APPLICATION IN CONTEXT</span>
+            </div>
+
+            <!-- Dynamic NLP application card explaining what happens in background -->
+            <div id="active-nlp-app-card" class="nexus-app-card active">
+                <div class="nexus-card-top">
+                    <div class="nexus-app-icon" id="nlp-app-icon">🧠</div>
+                    <div class="nexus-app-info">
+                        <span class="nexus-app-category" id="nlp-app-category">SEMANTIC VECTOR SPACE</span>
+                        <h4 class="nexus-app-name" id="nlp-app-name">MiniLM-L6 Embeddings</h4>
+                    </div>
+                </div>
+                <p class="nexus-app-desc" id="nlp-app-desc">Maps input text into high-dimensional latent space to enable semantic similarity calculation, zero-shot search, and context grounding without hallucination.</p>
+                <div class="nexus-app-widget" id="nlp-app-widget">
+                    <div class="widget-row">
+                        <span class="widget-label" id="widget-label">Latency / Execution</span>
+                        <span class="widget-score" id="widget-score" style="color: #C0152A;">Real-time (CPU)</span>
+                    </div>
+                    <div class="widget-bar-track">
+                        <div class="widget-bar-fill" id="widget-fill" style="width: 100%; background: linear-gradient(90deg, #BC7B26, #C0152A);"></div>
+                    </div>
+                </div>
+                <div class="nexus-app-tag" id="nlp-app-tag">FastAPI · PyTorch / ONNX · SQLite Vector Store</div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+<!-- Document Chunks & Entities Inspection Modal -->
+<div id="doc-modal" class="dash-modal" style="display:none;">
+    <div class="modal-backdrop" id="doc-modal-backdrop"></div>
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <span class="modal-icon">📄</span>
+                <h3 class="modal-title" id="modal-doc-title">Document Inspection</h3>
+            </div>
+            <button class="modal-close-btn" id="modal-doc-close">✕</button>
+        </div>
+        <div class="modal-tabs">
+            <button class="modal-tab-btn active" data-tab="tab-chunks">Passage Chunks</button>
+            <button class="modal-tab-btn" data-tab="tab-entities">Extracted Entities</button>
+            <button class="modal-tab-btn" data-tab="tab-fulltext">Full Text</button>
+        </div>
+        <div class="modal-body">
+            <div id="tab-chunks" class="modal-tab-content active"></div>
+            <div id="tab-entities" class="modal-tab-content"></div>
+            <div id="tab-fulltext" class="modal-tab-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Entity Merge Modal -->
+<div class="modal-backdrop" id="kg-merge-modal" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>⚯ Merge Duplicate Entities</h3>
+            <button class="modal-close-btn" id="btn-kg-cancel-merge">✕</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-sub">Reroute all relationship edges, mentions, and evidence citations from the Source Entity to the Target Entity, then safely remove the duplicate entity.</p>
+            <div class="modal-field">
+                <label class="field-label">Source Entity (Duplicate to be merged)</label>
+                <select id="kg-merge-source-select" class="dash-select"></select>
+            </div>
+            <div class="modal-field">
+                <label class="field-label">Target Entity (Canonical Entity to retain)</label>
+                <select id="kg-merge-target-select" class="dash-select"></select>
+            </div>
+            <div class="modal-notice">
+                ⚠️ This operation preserves all supporting evidence and source references while resolving terminology fragmentation.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="btn-kg-cancel-merge-2" onclick="document.getElementById('kg-merge-modal').style.display='none'">Cancel</button>
+            <button class="btn-primary" id="btn-kg-confirm-merge">Confirm & Execute Merge</button>
+        </div>
+    </div>
+</div>
+
+<!-- Relation Correction Modal -->
+<div class="modal-backdrop" id="kg-correct-modal" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>✎ Correct Extracted Predicate</h3>
+            <button class="modal-close-btn" id="btn-kg-cancel-correct">✕</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-sub">Update the semantic predicate classification for this relationship edge while preserving the original source sentence evidence.</p>
+            <div class="modal-field">
+                <label class="field-label">New Predicate</label>
+                <select id="kg-correct-predicate-select" class="dash-select">
+                    <option value="USES_METHOD">USES_METHOD</option>
+                    <option value="EVALUATED_ON">EVALUATED_ON</option>
+                    <option value="REPORTS_METRIC">REPORTS_METRIC</option>
+                    <option value="REPORTS_RESULT">REPORTS_RESULT</option>
+                    <option value="IMPROVES">IMPROVES</option>
+                    <option value="REDUCES">REDUCES</option>
+                    <option value="INCREASES">INCREASES</option>
+                    <option value="ASSOCIATED_WITH">ASSOCIATED_WITH</option>
+                    <option value="AUTHORED_BY">AUTHORED_BY</option>
+                    <option value="PUBLISHED_IN">PUBLISHED_IN</option>
+                    <option value="MENTIONS">MENTIONS</option>
+                    <option value="CITES">CITES</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="btn-kg-cancel-correct-2" onclick="document.getElementById('kg-correct-modal').style.display='none'">Cancel</button>
+            <button class="btn-primary" id="btn-kg-confirm-correct">Update Predicate</button>
+        </div>
+    </div>
+</div>
+
+<!-- System Log Floating Drawer -->
+<div id="mind-panel">
+    <div class="mind-header">
+        <span>System Log & Telemetry</span>
+        <button id="mind-panel-close" style="background:none;border:none;color:inherit;cursor:pointer;">✕</button>
+    </div>
+    <div class="mind-log" id="mind-log">
+        <div class="log-entry log-cmd">[SYS] CIPHER Agent OS Initialized</div>
+    </div>
+    <div class="mind-stats">
+        <span id="stat-calls">Calls: 0</span>
+        <span id="stat-tasks">Tasks: 0</span>
+        <span id="stat-resp">Avg: 18ms</span>
+    </div>
+</div>
+
+<script type="module" src="/src/dashboard.ts"></script>
+</body>
+</html>

@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIPHER — Intelligence That Acts</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --crimson-deep:   #8B0000;
+            --crimson-core:   #C0152A;
+            --crimson-glow:   #E8192C;
+            --gold-pure:      #D4A017;
+            --gold-light:     #F0C040;
+            --gold-dim:       #8A6500;
+            --white-pure:     #FFFFFF;
+            --white-soft:     #F5F0E8;
+            --white-ghost:    #B0A898;
+            --black-deep:     #050505;
+            --black-surface:  #0D0D0D;
+            --black-raised:   #141414;
+            --black-border:   #1F1F1F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--black-deep);
+            color: var(--white-pure);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* --- HERO BACKGROUND (LAYERS 1-5) --- */
+        #hero {
+            position: relative;
+            width: 100vw;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--white-soft);
+        }
+
+        /* Layer 2: Glows */
+        .glow-left, .glow-right {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .glow-left {
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse 55% 40% at 15% 60%, rgba(139,0,0,0.4), transparent);
+            animation: driftLeft 18s ease-in-out infinite alternate;
+        }
+        .glow-right {
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse 40% 50% at 85% 35%, rgba(212,160,23,0.3), transparent);
+            animation: driftRight 24s ease-in-out infinite alternate;
+        }
+        @keyframes driftLeft { from { transform: translateX(-3%); } to { transform: translateX(3%); } }
+        @keyframes driftRight { from { transform: translateX(3%); } to { transform: translateX(-3%); } }
+
+        /* Layer 3: Particles & Layer 4: PCB Circuit & Layer 5: Scanlines handled via SVG/CSS below */
+        #hero-svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 3px,
+                rgba(0,0,0,0.03) 3px,
+                rgba(0,0,0,0.03) 4px
+            );
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            z-index: 50;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: baseline;
+            gap: 0.2rem;
+        }
+        .nav-logo .c {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: var(--crimson-core);
+        }
+        .nav-logo .rest {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: var(--black-deep);
+            letter-spacing: 0.1em;
+            font-size: 18px;
+        }
+        .nav-links {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--black-deep);
+            letter-spacing: 0.12em;
+            word-spacing: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        #memory-indicator {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--black-border);
+            display: inline-block;
+            margin-left: 10px;
+            transition: background 0.3s ease;
+        }
+        #memory-indicator.active {
+            background: rgba(30,200,100,0.8);
+            box-shadow: 0 0 8px rgba(30,200,100,0.5);
+        }
+
+        /* --- CENTER ORB --- */
+        .hero-content {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: -2rem;
+        }
+        
+        .orb-container {
+            position: relative;
+            width: 300px; height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .orb-halo {
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139,0,0,0.15), transparent 70%);
+            animation: breathe 4s infinite alternate;
+        }
+        .orb-mid {
+            position: absolute;
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,160,23,0.35);
+            animation: rotateMid 25s linear infinite;
+        }
+        .orb-mid .tick {
+            position: absolute;
+            width: 1px; height: 6px;
+            background: var(--gold-pure);
+            top: 0; left: 50%;
+            transform-origin: 50% 110px;
+        }
+        .orb-mid .tick:nth-child(1) { transform: rotate(0deg); }
+        .orb-mid .tick:nth-child(2) { transform: rotate(120deg); }
+        .orb-mid .tick:nth-child(3) { transform: rotate(240deg); }
+
+        .orb-inner {
+            position: absolute;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            border: 0.5px solid rgba(192,21,42,0.4);
+            animation: rotateInner 18s linear infinite reverse;
+        }
+
+        .orb-core {
+            position: absolute;
+            width: 130px; height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #2a0005, #0a0002, #050505);
+            box-shadow: 0 0 50px rgba(192,21,42,0.35), inset 0 0 20px rgba(212,160,23,0.1);
+            animation: breatheCore 3s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+        .orb-core .letter {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            font-size: 32px;
+            color: var(--gold-pure);
+        }
+
+        /* Orb States */
+        .orb-container[data-state="listening"] .orb-inner { animation: rotateInner 5s linear infinite; }
+        .orb-container[data-state="listening"] .orb-halo { transform: scale(1.1); background: radial-gradient(circle, rgba(139,0,0,0.15), transparent 70%); }
+        .orb-container[data-state="thinking"] .orb-core { box-shadow: 0 0 50px rgba(212,160,23,0.4), inset 0 0 30px rgba(212,160,23,0.2); }
+        .orb-container[data-state="acting"] .orb-mid { animation: rotateMid 8s linear infinite; }
+        .orb-container[data-state="acting"] .orb-inner { animation: rotateInner 6s linear infinite reverse; }
+        .orb-container[data-state="acting"] .orb-core { box-shadow: 0 0 60px rgba(232,25,44,0.6), inset 0 0 20px rgba(232,25,44,0.3); }
+
+        @keyframes breathe { from { transform: scale(1); } to { transform: scale(1.03); } }
+        @keyframes breatheCore { from { transform: scale(1); } to { transform: scale(1.05); } }
+        @keyframes rotateMid { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotateInner { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Typography & Fade Ins */
+        .headline {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            font-size: clamp(4rem, 9vw, 8.5rem);
+            letter-spacing: 0.25em;
+            margin-right: -0.25em; /* compensate for tracking on last char */
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 0.8s forwards 0.4s;
+            line-height: 1;
+            color: var(--black-deep);
+        }
+        .subheadline {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.72rem;
+            color: var(--crimson-core);
+            letter-spacing: 0.4em;
+            margin-right: -0.4em;
+            margin-top: 1rem;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 0.8s forwards 0.65s;
+        }
+        .descriptor {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--black-deep);
+            margin-top: 1.5rem;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 0.8s forwards 0.85s;
+        }
+        
+        #hero .btn-ghost {
+            border: 1px solid var(--black-deep);
+            color: var(--black-deep);
+        }
+        #hero .btn-ghost:hover {
+            border-color: var(--crimson-core);
+            color: var(--crimson-core);
+            box-shadow: 0 0 20px rgba(192,21,42,0.2);
+        }
+        
+        .ctas {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 0.8s forwards 1.05s;
+        }
+        
+        button {
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        button:focus-visible {
+            box-shadow: 0 0 0 2px var(--gold-pure);
+        }
+        
+        .btn-primary {
+            background: var(--crimson-core);
+            border: 1px solid var(--crimson-glow);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            padding: 0.9rem 2.4rem;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        .btn-primary:hover {
+            background: var(--crimson-glow);
+            box-shadow: 0 0 22px rgba(232,25,44,0.5);
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold-pure);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            padding: 0.9rem 2.4rem;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        .btn-ghost:hover {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 20px rgba(212,160,23,0.2);
+            color: var(--gold-light);
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s forwards 1.5s;
+            z-index: 10;
+        }
+        .scroll-line {
+            width: 1px; height: 36px;
+            background: linear-gradient(to bottom, var(--crimson-core), transparent);
+        }
+        .scroll-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.65rem;
+            color: var(--black-deep);
+            letter-spacing: 0.2em;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- LAYOUT SHARED --- */
+        section:not(#hero) {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: clamp(4rem, 8vh, 7rem) 2rem;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        section.visible {
+            opacity: 1;
+        }
+        .bg-surface { background: var(--black-surface); }
+        .bg-deep { background: var(--black-deep); }
+
+        .section-header {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--gold-pure);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        input[type="text"], input[type="number"], select {
+            background: var(--black-raised);
+            border: 0.5px solid var(--black-border);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.8rem 1rem;
+            border-radius: 3px;
+            flex-grow: 1;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: var(--crimson-core);
+            box-shadow: 0 0 0 2px rgba(192,21,42,0.2);
+        }
+
+        /* --- AGENT BADGE --- */
+        .agent-badge {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: var(--black-raised);
+            border: 0.5px solid var(--black-border);
+            padding: 3px 10px;
+            border-radius: 2px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+        }
+        .agent-badge .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+        }
+        .agent-badge[data-status="thinking"] { display: flex; color: var(--gold-pure); }
+        .agent-badge[data-status="thinking"] .dot { background: var(--gold-pure); animation: blink 1s infinite alternate; }
+        .agent-badge[data-status="done"] { display: flex; color: rgba(30,200,100,0.8); }
+        .agent-badge[data-status="done"] .dot { background: rgba(30,200,100,0.8); }
+        .agent-badge[data-status="error"] { display: flex; color: var(--crimson-glow); }
+        .agent-badge[data-status="error"] .dot { background: var(--crimson-glow); }
+
+        @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+
+        /* --- FEATURE 1: BROWSING --- */
+        .split-panel {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            gap: 2rem;
+            position: relative;
+        }
+        .panel-box {
+            background: var(--black-deep);
+            border: 1px solid var(--black-border);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: var(--black-raised);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--black-border);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--white-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .browser-bar {
+            background: var(--black-deep);
+            border: 1px solid var(--black-border);
+            padding: 0.4rem 1rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--white-ghost);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        .content-text {
+            font-size: 0.85rem;
+            color: var(--white-ghost);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .gold-bullets li {
+            color: var(--gold-pure);
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            list-style-type: square;
+            margin-left: 1.2rem;
+        }
+        
+        .reasoning-log {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--white-ghost);
+            line-height: 1.8;
+        }
+        .reasoning-line {
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: slideIn 0.3s forwards;
+        }
+        .reasoning-line::before { content: "> "; color: var(--gold-dim); }
+        .progress-bar {
+            height: 2px;
+            background: var(--gold-pure);
+            width: 0%;
+            transition: width 0.3s ease;
+            margin-top: auto;
+        }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+        /* --- FEATURE 2: MISSION TASKS --- */
+        .mission-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .step-card {
+            border: 1px solid var(--black-border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            position: relative;
+            background: var(--black-raised);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+        .step-card.visible { opacity: 1; transform: translateY(0); }
+        
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            color: var(--white-soft);
+        }
+        .step-header .dot {
+            display: inline-block;
+            width: 8px; height: 8px; border-radius: 50%;
+            margin-right: 8px;
+            background: var(--white-ghost);
+        }
+        .step-card.running { border-color: var(--crimson-core); }
+        .step-card.running .dot { background: var(--crimson-core); animation: blink 1s infinite; }
+        .step-card.done { border-color: var(--gold-dim); border-width: 0.5px; }
+        .step-card.done .dot { background: var(--gold-pure); }
+        
+        .step-body {
+            font-size: 0.85rem;
+            color: var(--white-ghost);
+            line-height: 1.6;
+            min-height: 20px;
+        }
+        .step-time {
+            position: absolute;
+            bottom: 1rem; right: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold-pure);
+        }
+        .verdict-card {
+            margin-top: 2rem;
+            border: 1px solid var(--gold-pure);
+            padding: 2rem;
+            background: rgba(212,160,23,0.05);
+            border-radius: 4px;
+            display: none;
+        }
+        .verdict-header {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            color: var(--gold-pure);
+            margin-bottom: 1rem;
+        }
+
+        /* --- FEATURE 3: FORMS --- */
+        .form-split { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .form-field label {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--white-ghost);
+        }
+        .form-status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(212,160,23,0.1);
+            border-left: 2px solid var(--gold-pure);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold-pure);
+            display: none;
+        }
+
+        /* --- FEATURE 4: COMPARE --- */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            border: 0.5px solid var(--black-border);
+            display: none;
+        }
+        .compare-table th, .compare-table td {
+            border: 0.5px solid var(--black-border);
+            padding: 1rem;
+            text-align: left;
+        }
+        .compare-table th {
+            background: var(--black-raised);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: var(--white-soft);
+        }
+        .compare-table td {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            color: var(--white-ghost);
+        }
+        .compare-table tr:first-child td { font-weight: 500; color: var(--white-soft); font-family: 'Rajdhani', sans-serif; }
+        .cell-best { background: rgba(212,160,23,0.12) !important; color: var(--gold-light) !important; }
+        .cell-worst { background: rgba(139,0,0,0.08) !important; }
+        .winner-col { border-left: 2px solid var(--gold-pure) !important; border-right: 2px solid var(--gold-pure) !important; }
+
+        .winner-card {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--black-raised);
+            border: 1px solid var(--black-border);
+            border-radius: 4px;
+            display: none;
+        }
+        .winner-card h3 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        /* --- FEATURE 5: WORKFLOW --- */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .pipeline-line {
+            position: absolute;
+            top: 50%; left: 40px; right: 40px;
+            height: 1px;
+            background: repeating-linear-gradient(90deg, var(--black-border) 0, var(--black-border) 5px, transparent 5px, transparent 10px);
+            z-index: 1;
+        }
+        .pipeline-line-fill {
+            position: absolute;
+            top: 50%; left: 40px;
+            height: 1px;
+            background: var(--gold-pure);
+            width: 0%;
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+        .node {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: var(--black-deep);
+            border: 1px solid var(--black-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--white-ghost);
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+        .node.active {
+            border-color: var(--crimson-core);
+            box-shadow: 0 0 20px rgba(192,21,42,0.4);
+            color: white;
+        }
+        .node.done {
+            border-color: var(--gold-dim);
+            color: var(--gold-pure);
+        }
+        .workflow-output { display: flex; flex-direction: column; gap: 1rem; }
+        .wf-card {
+            background: var(--black-raised);
+            border: 1px solid var(--black-border);
+            padding: 1.5rem;
+            display: none;
+        }
+        .wf-card.final {
+            border-color: var(--gold-dim);
+            background: rgba(212,160,23,0.03);
+        }
+
+        /* --- FEATURE 6: VOICE ORB --- */
+        #voice-btn {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: var(--crimson-deep);
+            border: 1px solid var(--crimson-core);
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        #voice-btn:hover { background: var(--crimson-core); transform: scale(1.05); }
+        #voice-btn.listening {
+            border-color: var(--crimson-glow);
+            animation: pulseVoice 1.5s infinite;
+        }
+        #voice-label {
+            position: absolute;
+            top: -20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.65rem;
+            color: var(--crimson-glow);
+            display: none;
+        }
+        #voice-btn.listening #voice-label { display: block; }
+        @keyframes pulseVoice {
+            0% { box-shadow: 0 0 0 0 rgba(232,25,44,0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(232,25,44,0); }
+            100% { box-shadow: 0 0 0 0 rgba(232,25,44,0); }
+        }
+
+        /* --- FEATURE 7: MIND PANEL --- */
+        #mind-toggle {
+            position: fixed;
+            right: 0; top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: bottom right;
+            background: var(--black-raised);
+            border: 1px solid var(--black-border);
+            border-bottom: none;
+            padding: 8px 16px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            color: var(--white-ghost);
+            cursor: pointer;
+            z-index: 9998;
+            border-radius: 4px 4px 0 0;
+        }
+        #mind-panel {
+            position: fixed;
+            right: -320px; top: 0; bottom: 0;
+            width: 320px;
+            background: var(--black-surface);
+            border-left: 0.5px solid var(--black-border);
+            z-index: 9997;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        #mind-panel.open { right: 0; }
+        .mind-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--black-border);
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--gold-pure);
+            font-size: 1.2rem;
+        }
+        .mind-log {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .log-entry {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            word-wrap: break-word;
+            opacity: 0;
+            transform: translateX(20px);
+            animation: slideLeft 0.2s forwards ease-out;
+        }
+        @keyframes slideLeft { to { opacity: 1; transform: translateX(0); } }
+        .log-api { color: var(--white-ghost); }
+        .log-success { color: rgba(30,200,100,0.8); }
+        .log-error { color: var(--crimson-glow); }
+        .log-cmd { color: var(--gold-pure); }
+        .mind-stats {
+            padding: 1rem;
+            border-top: 1px solid var(--black-border);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gold-dim);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .split-panel, .form-split, .form-grid { grid-template-columns: 1fr; }
+            .orb-container { transform: scale(0.75); }
+            .headline { font-size: 3rem; }
+            .ctas { flex-direction: column; width: 100%; max-width: 300px; }
+            .pipeline { flex-direction: column; gap: 2rem; }
+            .pipeline-line { display: none; }
+        }
+        
+        /* Settings Modal */
+        #settings-modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5,5,5,0.9); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--black-surface); padding: 2rem;
+            border: 1px solid var(--gold-dim); border-radius: 4px; max-width: 400px; width: 90%;
+        }
+        .modal-content h3 { font-family: 'Rajdhani', sans-serif; color: var(--gold-pure); margin-bottom: 1rem; }
+        .modal-content p { font-size: 0.85rem; color: var(--white-ghost); margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <!-- SETTINGS MODAL FOR API KEY -->
+    <div id="settings-modal">
+        <div class="modal-content">
+            <h3>INITIALIZE CIPHER</h3>
+            <p>Enter your Google Gemini API Key to activate agent functions. <br><a href="https://aistudio.google.com/" target="_blank" style="color:var(--gold-pure)">Get a free key here.</a></p>
+            <input type="text" id="api-key-input" placeholder="AIzaSy..." style="width:100%; margin-bottom:1rem;">
+            <button class="btn-primary" onclick="saveApiKey()" style="width:100%">BOOT SYSTEM</button>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-logo">
+            <span class="c">C</span><span class="rest">IPHER</span>
+        </div>
+        <div class="nav-links">
+            <a href="#agent-browse" style="color:inherit;text-decoration:none">BROWSE</a>
+            <a href="#agent-scrape" style="color:inherit;text-decoration:none">SCRAPE</a>
+            <a href="#agent-tasks" style="color:inherit;text-decoration:none">TASKS</a>
+            <a href="#agent-compare" style="color:inherit;text-decoration:none">COMPARE</a>
+            <a href="#agent-workflow" style="color:inherit;text-decoration:none">WORKFLOW</a>
+            <span id="memory-indicator" title="Memory Context Active"></span>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="glow-left"></div>
+        <div class="glow-right"></div>
+        <svg id="hero-svg">
+            <!-- Populated via JS -->
+        </svg>
+        <div class="scanlines"></div>
+
+        <div class="hero-content">
+            <div class="orb-container" id="main-orb" data-state="idle">
+                <div class="orb-halo"></div>
+                <div class="orb-mid">
+                    <div class="tick"></div><div class="tick"></div><div class="tick"></div>
+                </div>
+                <div class="orb-inner"></div>
+                <div class="orb-core">
+                    <span class="letter">C</span>
+                </div>
+            </div>
+            
+            <h1 class="headline">CIPHER</h1>
+            <h2 class="subheadline">INTELLIGENCE THAT ACTS</h2>
+            <p class="descriptor">Browse. Reason. Book. Execute.</p>
+            
+            <div class="ctas">
+                <button class="btn-primary" onclick="document.getElementById('agent-workflow').scrollIntoView()">ACTIVATE CIPHER</button>
+                <button class="btn-ghost" onclick="document.getElementById('agent-tasks').scrollIntoView()">SEE LIVE DEMO</button>
+            </div>
+        </div>
+
+        <div class="scroll-cue">
+            <div class="scroll-line"></div>
+            <span class="scroll-text">SCROLL</span>
+        </div>
+    </section>
+
+    <section id="agent-browse" class="bg-surface">
+        <h2 class="section-header">LIVE WEB BROWSING AGENT</h2>
+        <div class="input-group">
+            <input type="text" id="browse-url" value="https://news.ycombinator.com" placeholder="URL to visit">
+            <input type="text" id="browse-task" value="Find the top 3 AI stories today" placeholder="What to find">
+            <button class="btn-primary" onclick="featureBrowse()">BROWSE</button>
+        </div>
+        
+        <div class="split-panel">
+            <div class="panel-box">
+                <div class="agent-badge" id="badge-browse">
+                    <div class="dot"></div> <span class="badge-text">WORKING</span>
+                </div>
+                <div class="panel-header">AGENT BROWSER</div>
+                <div class="panel-content" style="padding-top:0;">
+                    <div style="margin: 1rem 0; text-align:center;">
+                        <div class="browser-bar" id="browse-bar-ui">🔒 awaiting url...</div>
+                    </div>
+                    <div class="content-text" id="browse-content">Content will appear here...</div>
+                    <ul class="gold-bullets" id="browse-facts"></ul>
+                </div>
+            </div>
+            
+            <div class="panel-box">
+                <div class="panel-header" style="color:var(--gold-pure)">CIPHER IS THINKING</div>
+                <div class="panel-content reasoning-log" id="browse-log"></div>
+                <div class="progress-bar" id="browse-progress"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agent-scrape" class="bg-deep">
+        <h2 class="section-header">DATA SCRAPER & NLP SUMMARIZER</h2>
+        <div class="input-group">
+            <input type="text" id="scrape-url" value="https://en.wikipedia.org/wiki/Artificial_intelligence" placeholder="URL to scrape & summarize">
+            <button class="btn-primary" onclick="featureScrape()">SCRAPE & ANALYZE</button>
+            <button class="btn-ghost" id="scrape-csv-btn" style="display:none;" onclick="downloadScrapeCSV()">DOWNLOAD CSV</button>
+        </div>
+        
+        <div class="split-panel">
+            <div class="panel-box">
+                <div class="agent-badge" id="badge-scrape">
+                    <div class="dot"></div> <span class="badge-text">WORKING</span>
+                </div>
+                <div class="panel-header">RAW EXTRACTED DATA</div>
+                <div class="panel-content">
+                    <div class="content-text" id="scrape-raw">Raw text will appear here...</div>
+                </div>
+            </div>
+            
+            <div class="panel-box">
+                <div class="panel-header" style="color:var(--gold-pure)">HIGHLIGHTED SUMMARY (NLP)</div>
+                <div class="panel-content">
+                    <div class="content-text" id="scrape-summary" style="line-height:1.8;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agent-tasks" class="bg-surface">
+        <h2 class="section-header">MULTI-STEP TASK REASONING</h2>
+        <div class="input-group">
+            <input type="text" id="task-input" placeholder="Give Cipher a mission... e.g. Research the best budget laptops under ₹50,000, compare top 3, and recommend the best one for a CS student">
+            <button class="btn-primary" onclick="featureMission()">EXECUTE MISSION</button>
+        </div>
+
+        <div class="panel-box" style="position:relative">
+            <div class="agent-badge" id="badge-mission">
+                <div class="dot"></div> <span class="badge-text">WORKING</span>
+            </div>
+            <div class="panel-content">
+                <div class="mission-timeline" id="mission-timeline">
+                    <!-- Steps injected here -->
+                </div>
+                <div class="verdict-card" id="mission-verdict">
+                    <div class="verdict-header">CIPHER'S VERDICT</div>
+                    <div class="content-text" id="mission-verdict-text"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agent-forms" class="bg-surface">
+        <h2 class="section-header">SMART FORM FILLER</h2>
+        <div class="form-split">
+            <div class="panel-box">
+                <div class="panel-header">FLIGHT SEARCH FORM</div>
+                <div class="panel-content form-grid" id="demo-form">
+                    <div class="form-field"><label>From City</label><input type="text" id="f-from"></div>
+                    <div class="form-field"><label>To City</label><input type="text" id="f-to"></div>
+                    <div class="form-field"><label>Departure Date</label><input type="text" id="f-dep" placeholder="YYYY-MM-DD"></div>
+                    <div class="form-field"><label>Return Date</label><input type="text" id="f-ret" placeholder="YYYY-MM-DD"></div>
+                    <div class="form-field"><label>Passengers</label><input type="number" id="f-pax"></div>
+                    <div class="form-field">
+                        <label>Class</label>
+                        <select id="f-class"><option value="Economy">Economy</option><option value="Business">Business</option></select>
+                    </div>
+                    <div class="form-field"><label>Preferred Airline</label><input type="text" id="f-air"></div>
+                    <div class="form-field"><label>Budget Max (₹)</label><input type="number" id="f-bud"></div>
+                </div>
+                <div id="form-status" class="form-status">FORM FILLED BY CIPHER — Review and confirm</div>
+            </div>
+
+            <div>
+                <div class="input-group" style="flex-direction:column;">
+                    <label style="font-family:'Rajdhani',sans-serif;color:var(--white-ghost)">Tell Cipher what to book...</label>
+                    <textarea id="form-instruction" style="background:var(--black-raised);border:0.5px solid var(--black-border);color:white;font-family:'Inter';padding:1rem;height:120px;border-radius:3px;outline:none;" placeholder="Book me a round trip flight from Pune to Goa next weekend, economy class, budget under ₹8000, 1 passenger"></textarea>
+                    <button class="btn-primary" onclick="featureForm()">FILL FORM</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agent-compare" class="bg-deep">
+        <h2 class="section-header">LIVE OPTIONS COMPARATOR</h2>
+        <div class="input-group">
+            <select id="comp-cat" style="max-width:150px;">
+                <option value="Laptops">Laptops</option>
+                <option value="Phones">Phones</option>
+                <option value="Courses">Courses</option>
+            </select>
+            <input type="text" id="comp-1" value="MacBook Air M3">
+            <input type="text" id="comp-2" value="Dell XPS 13">
+            <input type="text" id="comp-3" value="ASUS Zenbook 14">
+            <button class="btn-primary" onclick="featureCompare()">COMPARE</button>
+        </div>
+
+        <div style="position:relative">
+            <div class="agent-badge" id="badge-compare">
+                <div class="dot"></div> <span class="badge-text">WORKING</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="compare-table" id="comp-table">
+                    <!-- Injected via JS -->
+                </table>
+            </div>
+            <div class="winner-card" id="comp-winner">
+                <h3 id="comp-winner-name">CIPHER'S PICK: </h3>
+                <div class="content-text" id="comp-winner-just"></div>
+                <div style="margin-top:1rem;font-family:'JetBrains Mono';color:var(--gold-pure);font-size:0.8rem;" id="comp-conf"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agent-workflow" class="bg-surface" style="margin-bottom: 5rem;">
+        <h2 class="section-header">END-TO-END WORKFLOW RUNNER</h2>
+        <div class="input-group">
+            <input type="text" id="wf-goal" value="Plan my trip to Goa" style="width:60%">
+            <button class="btn-primary" onclick="featureWorkflow()">RUN PIPELINE</button>
+        </div>
+
+        <div style="position:relative">
+            <div class="agent-badge" id="badge-workflow">
+                <div class="dot"></div> <span class="badge-text">WORKING</span>
+            </div>
+            <div class="pipeline">
+                <div class="pipeline-line"></div>
+                <div class="pipeline-line-fill" id="wf-fill"></div>
+                <div class="node" id="wf-n1">RESEARCH</div>
+                <div class="node" id="wf-n2">COMPARE</div>
+                <div class="node" id="wf-n3">DECIDE</div>
+                <div class="node" id="wf-n4">EXECUTE</div>
+                <div class="node" id="wf-n5">CONFIRM</div>
+            </div>
+            
+            <div class="workflow-output" id="wf-output">
+                <!-- Cards injected -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FIXED ELEMENTS -->
+    <button id="voice-btn" onclick="toggleVoice()" aria-label="Voice Command">
+        <span id="voice-label">LISTENING...</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+    </button>
+
+    <button id="mind-toggle" onclick="document.getElementById('mind-panel').classList.toggle('open')">[ MIND ]</button>
+    
+    <div id="mind-panel">
+        <div class="mind-header">CIPHER MIND LOG</div>
+        <div class="mind-log" id="mind-log">
+            <div class="log-entry log-api">[SYS] System Initialized</div>
+        </div>
+        <div class="mind-stats">
+            <span id="stat-calls">Calls: 0</span>
+            <span id="stat-tasks">Tasks: 0</span>
+            <span id="stat-resp">Avg: 0.0s</span>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. STATE & MEMORY ---
+        let API_KEY = sessionStorage.getItem('gemini_key');
+        if(!API_KEY) {
+            document.getElementById('settings-modal').style.display = 'flex';
+        } else {
+            document.getElementById('settings-modal').style.display = 'none';
+            initMemory();
+        }
+
+        function saveApiKey() {
+            const k = document.getElementById('api-key-input').value.trim();
+            if(k) {
+                API_KEY = k;
+                sessionStorage.setItem('gemini_key', k);
+                document.getElementById('settings-modal').style.display = 'none';
+                initMemory();
+            }
+        }
+
+        const memory = {
+            userName: null,
+            preferences: {},
+            sessionHistory: []
+        };
+        
+        let stats = { calls: 0, tasks: 0, timeTotal: 0 };
+
+        function initMemory() {
+            if(!memory.userName) {
+                const name = prompt("CIPHER: What should I call you?");
+                if(name) {
+                    memory.userName = name;
+                    document.getElementById('memory-indicator').classList.add('active');
+                    appendLog('cmd', `Context loaded for user: ${name}`);
+                }
+            }
+        }
+
+        // --- 2. CORE UTILS & API WRAPPER ---
+        function setOrbState(state) { document.getElementById('main-orb').setAttribute('data-state', state); }
+        
+        function setBadge(id, status, text="WORKING") {
+            const b = document.getElementById(id);
+            if(status === 'idle') { b.style.display = 'none'; return; }
+            b.style.display = 'flex';
+            b.setAttribute('data-status', status);
+            b.querySelector('.badge-text').innerText = text;
+        }
+
+        function appendLog(type, msg) {
+            const logBox = document.getElementById('mind-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const time = new Date().toISOString().substring(11,19);
+            entry.innerText = `[${time}] ${msg}`;
+            logBox.prepend(entry);
+            if(logBox.children.length > 200) logBox.lastChild.remove();
+        }
+
+        function updateStats(timeMs) {
+            stats.calls++;
+            stats.timeTotal += (timeMs/1000);
+            document.getElementById('stat-calls').innerText = `Calls: ${stats.calls}`;
+            document.getElementById('stat-tasks').innerText = `Tasks: ${stats.tasks}`;
+            document.getElementById('stat-resp').innerText = `Avg: ${(stats.timeTotal/stats.calls).toFixed(1)}s`;
+        }
+
+        function parseJSON(raw) {
+            const clean = raw.replace(/```json|```/g, "").trim();
+            try { return JSON.parse(clean); }
+            catch(e) { console.error("JSON parse error:", raw); return null; }
+        }
+
+        async function typeText(el, text, speed=20) {
+            el.innerHTML = '';
+            for(let i=0; i<text.length; i++) {
+                el.innerHTML += text.charAt(i);
+                await new Promise(r => setTimeout(r, speed));
+            }
+        }
+
+        // Gemini REST API Wrapper
+        async function callCipher(systemPrompt, userMessage, jsonMode=true) {
+            appendLog('api', `Calling Gemini API...`);
+            const start = performance.now();
+            const memCtx = `User context: ${JSON.stringify(memory)}. Today: ${new Date().toDateString()}. `;
+            
+            const payload = {
+                systemInstruction: { parts: [{ text: memCtx + systemPrompt }] },
+                contents: [{ role: "user", parts: [{ text: userMessage }] }]
+            };
+            if(jsonMode) {
+                payload.generationConfig = { responseMimeType: "application/json" };
+            }
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                const end = performance.now();
+                updateStats(end-start);
+                
+                if(data.error) throw new Error(data.error.message);
+                
+                const text = data.candidates[0].content.parts[0].text;
+                appendLog('success', `API Response OK (${((end-start)/1000).toFixed(1)}s)`);
+                return text;
+            } catch(e) {
+                appendLog('error', `API Error: ${e.message}`);
+                throw e;
+            }
+        }
+
+        // --- 3. FEATURES IMPLEMENTATION ---
+
+        // Feature 1: Browse
+        async function featureBrowse() {
+            stats.tasks++;
+            const url = document.getElementById('browse-url').value;
+            const task = document.getElementById('browse-task').value;
+            setOrbState('thinking');
+            setBadge('badge-browse', 'thinking');
+            document.getElementById('browse-bar-ui').innerText = `🔒 ${url}`;
+            document.getElementById('browse-content').innerText = '';
+            document.getElementById('browse-facts').innerHTML = '';
+            const logDiv = document.getElementById('browse-log');
+            logDiv.innerHTML = '';
+            document.getElementById('browse-progress').style.width = '0%';
+            
+            const steps = [
+                "Fetching page content via CORS proxy...",
+                "Extracting DOM text and cleaning artifacts...",
+                "Cross-referencing content with task parameters...",
+                "Summarizing findings..."
+            ];
+
+            // Simulate reasoning log
+            for(let i=0; i<steps.length; i++) {
+                const div = document.createElement('div');
+                div.className = 'reasoning-line';
+                div.innerText = steps[i];
+                logDiv.appendChild(div);
+                document.getElementById('browse-progress').style.width = `${(i+1)*25}%`;
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            // Real fetch via CORS proxy to get actual page text
+            let pageText = "Failed to fetch live content.";
+            try {
+                const proxyRes = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`);
+                const html = await proxyRes.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                pageText = doc.body.innerText.substring(0, 8000); // limit tokens
+            } catch(e) {
+                appendLog('error', 'CORS fetch failed, using fallback knowledge.');
+                pageText = "User requested a live site but fetch failed. Infer based on URL domain.";
+            }
+
+            const sys = `You are Cipher's web browsing agent. Task: ${task}. Page content (raw): ${pageText}. Return JSON: {extracted_content: "2 paragraphs", key_facts: ["fact1"], summary: "short string"}`;
+            
+            try {
+                const raw = await callCipher(sys, `URL: ${url}`);
+                const data = parseJSON(raw);
+                if(data) {
+                    await typeText(document.getElementById('browse-content'), data.extracted_content, 10);
+                    data.key_facts.forEach(f => {
+                        const li = document.createElement('li'); li.innerText = f;
+                        document.getElementById('browse-facts').appendChild(li);
+                    });
+                    setBadge('badge-browse', 'done', 'DONE');
+                    setOrbState('idle');
+                }
+            } catch(e) {
+                setBadge('badge-browse', 'error', 'ERROR');
+                setOrbState('idle');
+            }
+        }
+
+        // Feature 1b: Scraper & NLP
+        let lastScrapedData = null;
+        async function featureScrape() {
+            stats.tasks++;
+            const url = document.getElementById('scrape-url').value;
+            setOrbState('thinking');
+            setBadge('badge-scrape', 'thinking');
+            document.getElementById('scrape-raw').innerText = 'Scraping and analyzing...';
+            document.getElementById('scrape-summary').innerHTML = '';
+            document.getElementById('scrape-csv-btn').style.display = 'none';
+            lastScrapedData = null;
+
+            try {
+                // Call local FastAPI backend
+                const res = await fetch('http://localhost:8000/api/scrape', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                
+                if(!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                lastScrapedData = data;
+                
+                document.getElementById('scrape-raw').innerText = data.full_text;
+                
+                // Highlight summary
+                let highlightedHtml = '';
+                data.summary.forEach(sentence => {
+                    highlightedHtml += `<span style="background:rgba(212,160,23,0.15); color:var(--gold-light); padding:2px 4px; border-radius:3px; margin-bottom:10px; display:inline-block;">${sentence}</span><br>`;
+                });
+                document.getElementById('scrape-summary').innerHTML = highlightedHtml;
+                document.getElementById('scrape-csv-btn').style.display = 'inline-block';
+                
+                setBadge('badge-scrape', 'done', 'DONE');
+                setOrbState('idle');
+            } catch(e) {
+                appendLog('error', `Scrape failed: ${e.message}`);
+                document.getElementById('scrape-raw').innerText = `Error: Please ensure the Python backend is running on localhost:8000. \nDetails: ${e.message}`;
+                setBadge('badge-scrape', 'error', 'ERROR');
+                setOrbState('idle');
+            }
+        }
+        
+        function downloadScrapeCSV() {
+            if(!lastScrapedData) return;
+            let csvContent = "data:text/csv;charset=utf-8,Type,Content\n";
+            csvContent += `Title,"${lastScrapedData.title.replace(/"/g, '""')}"\n`;
+            csvContent += `URL,"${lastScrapedData.url.replace(/"/g, '""')}"\n`;
+            lastScrapedData.summary.forEach((s, i) => {
+                csvContent += `Summary Sentence ${i+1},"${s.replace(/"/g, '""')}"\n`;
+            });
+            csvContent += `Full Text,"${lastScrapedData.full_text.replace(/"/g, '""')}"\n`;
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "cipher_scrape_analysis.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Feature 2: Mission
+        async function featureMission() {
+            stats.tasks++;
+            const task = document.getElementById('task-input').value;
+            setOrbState('thinking');
+            setBadge('badge-mission', 'thinking');
+            const tl = document.getElementById('mission-timeline');
+            tl.innerHTML = '';
+            document.getElementById('mission-verdict').style.display = 'none';
+
+            // Phase 1: Plan
+            const planSys = `You are Cipher's task planner. Break the user's task into exactly 3 sequential concrete steps. Return JSON: {steps: [{id: 1, title: "Search", description: "Query"}]}`;
+            try {
+                const planRaw = await callCipher(planSys, task);
+                const plan = parseJSON(planRaw);
+                let history = [];
+
+                // Phase 2: Execute
+                for(let i=0; i<plan.steps.length; i++) {
+                    const step = plan.steps[i];
+                    setOrbState('acting');
+                    const card = document.createElement('div');
+                    card.className = 'step-card running visible';
+                    card.innerHTML = `
+                        <div class="step-header"><span class="dot"></span>STEP ${step.id} OF ${plan.steps.length} — ${step.title.toUpperCase()}</div>
+                        <div class="step-body" id="step-b-${step.id}">Working...</div>
+                        <div class="step-time" id="step-t-${step.id}"></div>
+                    `;
+                    tl.appendChild(card);
+                    
+                    const startT = performance.now();
+                    const execSys = `Execute step ${step.id}: ${step.description}. Context from previous steps: ${JSON.stringify(history)}. Return concise text findings (not JSON).`;
+                    const res = await callCipher(execSys, "Execute.", false);
+                    
+                    await typeText(document.getElementById(`step-b-${step.id}`), res, 10);
+                    document.getElementById(`step-t-${step.id}`).innerText = `✓ ${((performance.now()-startT)/1000).toFixed(1)}s`;
+                    card.className = 'step-card done visible';
+                    history.push(`Step ${step.id}: ${res}`);
+                }
+
+                // Phase 3: Verdict
+                setOrbState('thinking');
+                const vSys = `Given findings: ${JSON.stringify(history)}. Provide a final recommendation in 2 sentences. (Not JSON)`;
+                const verdict = await callCipher(vSys, "Summarize", false);
+                const vCard = document.getElementById('mission-verdict');
+                vCard.style.display = 'block';
+                await typeText(document.getElementById('mission-verdict-text'), verdict, 20);
+                
+                setBadge('badge-mission', 'done', 'DONE');
+                setOrbState('idle');
+
+            } catch(e) {
+                setBadge('badge-mission', 'error', 'ERROR');
+                setOrbState('idle');
+            }
+        }
+
+        // Feature 3: Forms
+        async function featureForm() {
+            stats.tasks++;
+            const ins = document.getElementById('form-instruction').value;
+            setOrbState('thinking');
+            document.getElementById('form-status').style.display = 'none';
+            // reset fields
+            ['f-from','f-to','f-dep','f-ret','f-pax','f-class','f-air','f-bud'].forEach(id => {
+                document.getElementById(id).value = '';
+                document.getElementById(id).style.borderColor = 'var(--black-border)';
+            });
+
+            const sys = `Extract flight details from instruction. Return JSON keys: from, to, dep, ret, pax, cls, air, bud. Infer missing values.`;
+            try {
+                const raw = await callCipher(sys, ins);
+                const data = parseJSON(raw);
+                if(data) {
+                    setOrbState('acting');
+                    const map = { 'f-from': data.from, 'f-to': data.to, 'f-dep': data.dep, 'f-ret': data.ret, 'f-pax': data.pax, 'f-class': data.cls, 'f-air': data.air, 'f-bud': data.bud };
+                    
+                    for(let id in map) {
+                        if(map[id]) {
+                            const el = document.getElementById(id);
+                            el.style.borderColor = 'var(--crimson-core)';
+                            if(el.tagName === 'SELECT') {
+                                el.value = map[id];
+                            } else {
+                                await typeText(el, String(map[id]), 40);
+                                el.value = map[id]; // Ensure set
+                            }
+                            await new Promise(r => setTimeout(r, 150));
+                            el.style.borderColor = 'var(--gold-dim)';
+                        }
+                    }
+                    document.getElementById('form-status').style.display = 'block';
+                    setOrbState('idle');
+                }
+            } catch(e) {}
+        }
+
+        // Feature 4: Compare
+        async function featureCompare() {
+            stats.tasks++;
+            const cat = document.getElementById('comp-cat').value;
+            const items = [document.getElementById('comp-1').value, document.getElementById('comp-2').value, document.getElementById('comp-3').value].filter(Boolean);
+            
+            setOrbState('thinking');
+            setBadge('badge-compare', 'thinking');
+            const tb = document.getElementById('comp-table');
+            tb.style.display = 'none';
+            tb.innerHTML = '';
+            document.getElementById('comp-winner').style.display = 'none';
+
+            const sys = `Compare ${cat}: ${items.join(', ')}. Return JSON: { criteria: ["Price", "Performance", "Battery", "Verdict"], items: [{name:"x", values:["v1","v2"]}], winner: "x", justification: "text", confidence: 95, bestCellIndices: { "Price": 0 } }`;
+            
+            try {
+                const raw = await callCipher(sys, "Compare them objectively");
+                const data = parseJSON(raw);
+                
+                if(data) {
+                    // Build table
+                    let html = `<tr><th>Criteria</th>`;
+                    data.items.forEach(i => html += `<th>${i.name}</th>`);
+                    html += `</tr>`;
+                    
+                    data.criteria.forEach((crit, cIdx) => {
+                        html += `<tr><td>${crit}</td>`;
+                        data.items.forEach((item, iIdx) => {
+                            let cls = '';
+                            if(data.winner === item.name) cls = 'winner-col';
+                            // simple highlight mock for demo
+                            if(cIdx === 0 && iIdx === 1) cls += ' cell-best'; 
+                            html += `<td class="${cls}">${item.values[cIdx]}</td>`;
+                        });
+                        html += `</tr>`;
+                    });
+                    
+                    tb.innerHTML = html;
+                    tb.style.display = 'table';
+                    
+                    document.getElementById('comp-winner-name').innerText = `CIPHER'S PICK: ${data.winner}`;
+                    document.getElementById('comp-winner-just').innerText = data.justification;
+                    document.getElementById('comp-conf').innerText = `Confidence: ${data.confidence}%`;
+                    document.getElementById('comp-winner').style.display = 'block';
+                    
+                    setBadge('badge-compare', 'done', 'DONE');
+                    setOrbState('idle');
+                }
+            } catch(e) {
+                setBadge('badge-compare', 'error', 'ERROR');
+                setOrbState('idle');
+            }
+        }
+
+        // Feature 5: Workflow
+        async function featureWorkflow() {
+            stats.tasks++;
+            const goal = document.getElementById('wf-goal').value;
+            setOrbState('acting');
+            setBadge('badge-workflow', 'thinking', 'RUNNING');
+            
+            const nodes = ['wf-n1', 'wf-n2', 'wf-n3', 'wf-n4', 'wf-n5'];
+            nodes.forEach(n => document.getElementById(n).className = 'node');
+            const out = document.getElementById('wf-output');
+            out.innerHTML = '';
+            document.getElementById('wf-fill').style.width = '0%';
+
+            const stages = [
+                {id:1, title: 'RESEARCH', sys: 'Provide 3 brief bullet points researching: '},
+                {id:2, title: 'COMPARE', sys: 'Compare the findings and select the best path: '},
+                {id:3, title: 'DECIDE', sys: 'Make a definitive choice and state it clearly: '},
+                {id:4, title: 'EXECUTE', sys: 'Simulate executing the booking/action. State success: '},
+                {id:5, title: 'CONFIRM', sys: 'Generate a final formatted itinerary/confirmation document: '}
+            ];
+
+            let context = goal;
+            
+            for(let i=0; i<stages.length; i++) {
+                const node = document.getElementById(nodes[i]);
+                node.classList.add('active');
+                
+                try {
+                    const res = await callCipher(stages[i].sys, `Goal: ${goal}. Context: ${context}`, false);
+                    context = res; // pass forward
+                    
+                    node.classList.remove('active');
+                    node.classList.add('done');
+                    node.innerHTML = '✓';
+                    
+                    document.getElementById('wf-fill').style.width = `${i*25}%`;
+                    
+                    const card = document.createElement('div');
+                    card.className = i===4 ? 'wf-card final' : 'wf-card';
+                    card.style.display = 'block';
+                    card.innerHTML = `<div style="color:var(--gold-pure);font-family:'Rajdhani';margin-bottom:0.5rem;font-weight:700">STAGE ${i+1}: ${stages[i].title}</div><div class="content-text">${res.replace(/\n/g, '<br>')}</div>`;
+                    out.appendChild(card);
+                    
+                } catch(e) {
+                    node.style.borderColor = 'var(--crimson-glow)';
+                    break;
+                }
+            }
+            setBadge('badge-workflow', 'done', 'COMPLETED');
+            setOrbState('idle');
+        }
+
+        // Feature 6: Voice Layer
+        let recognition = null;
+        function setupVoice() {
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                
+                recognition.onstart = function() {
+                    document.getElementById('voice-btn').classList.add('listening');
+                    setOrbState('listening');
+                    appendLog('cmd', 'Voice listening started...');
+                };
+                
+                recognition.onresult = async function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    appendLog('cmd', `Heard: "${transcript}"`);
+                    routeCommand(transcript);
+                };
+                
+                recognition.onend = function() {
+                    document.getElementById('voice-btn').classList.remove('listening');
+                    if(document.getElementById('main-orb').getAttribute('data-state') === 'listening') {
+                        setOrbState('idle');
+                    }
+                };
+            } else {
+                appendLog('error', 'Speech API not supported in this browser.');
+            }
+        }
+        
+        function toggleVoice() {
+            if(!recognition) setupVoice();
+            if(recognition) {
+                if(document.getElementById('voice-btn').classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            }
+        }
+
+        async function routeCommand(cmd) {
+            setOrbState('thinking');
+            const sys = `Route this command to a module. Return JSON: {module: "browse"|"scrape"|"tasks"|"forms"|"compare"|"workflow"|"unknown", instruction: "extracted command"}`;
+            try {
+                const raw = await callCipher(sys, cmd);
+                const data = parseJSON(raw);
+                if(data && data.module !== 'unknown') {
+                    const map = {
+                        'browse': { id: 'agent-browse', input: 'browse-task', btn: featureBrowse },
+                        'scrape': { id: 'agent-scrape', input: 'scrape-url', btn: featureScrape },
+                        'tasks': { id: 'agent-tasks', input: 'task-input', btn: featureMission },
+                        'forms': { id: 'agent-forms', input: 'form-instruction', btn: featureForm },
+                        'compare': { id: 'agent-compare', input: 'comp-1', btn: null }, // simplify for demo
+                        'workflow': { id: 'agent-workflow', input: 'wf-goal', btn: featureWorkflow }
+                    };
+                    
+                    const target = map[data.module];
+                    if(target) {
+                        document.getElementById(target.id).scrollIntoView();
+                        document.getElementById(target.input).value = data.instruction;
+                        if(target.btn) setTimeout(target.btn, 1000);
+                        appendLog('success', `Routed to ${data.module.toUpperCase()}`);
+                        speak(`Running ${data.module} protocol`);
+                    }
+                } else {
+                    appendLog('error', 'Command not recognized.');
+                    setOrbState('idle');
+                }
+            } catch(e) {
+                setOrbState('idle');
+            }
+        }
+        
+        function speak(text) {
+            if('speechSynthesis' in window) {
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.pitch = 0.8;
+                msg.rate = 1.1;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        // --- INIT HERO SVG ART ---
+        function initHeroArt() {
+            const svg = document.getElementById('hero-svg');
+            let html = '';
+            
+            // Stars (Agentic Structure Nodes)
+            for(let i=0; i<60; i++) {
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                let color, r, op;
+                if(i<30) { color = 'var(--black-deep)'; r = 1.0 + Math.random()*1.5; op = 0.5 + Math.random()*0.4; }
+                else if(i<50) { color = 'var(--gold-pure)'; r = 1.2 + Math.random()*1.0; op = 0.6 + Math.random()*0.3; }
+                else { color = 'var(--crimson-core)'; r = 1.5 + Math.random()*1.2; op = 0.7 + Math.random()*0.3; }
+                const dur = 2 + Math.random()*3;
+                const del = Math.random()*3;
+                
+                html += `<circle cx="${x}%" cy="${y}%" r="${r}" fill="${color}" opacity="${op}">
+                    <animate attributeName="opacity" values="${op};${op*0.2};${op}" dur="${dur}s" begin="${del}s" repeatCount="indefinite"/>
+                </circle>`;
+            }
+            
+            // Neural Net Traces (Neurons connections)
+            for(let i=0; i<45; i++) {
+                const x1 = Math.random()*100; const y1 = Math.random()*100;
+                const x2 = x1 + (Math.random()>0.5 ? 15 + Math.random()*25 : -15 - Math.random()*25); 
+                const y2 = y1 + (Math.random()>0.5 ? 15 + Math.random()*25 : -15 - Math.random()*25);
+                const color = Math.random()>0.5 ? 'rgba(212,160,23,0.7)' : 'rgba(192,21,42,0.7)';
+                html += `<line x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%" stroke="${color}" stroke-width="1.2"/>`;
+                html += `<circle cx="${x1}%" cy="${y1}%" r="2.5" fill="${color}" opacity="0.8"/>`;
+                html += `<circle cx="${x2}%" cy="${y2}%" r="2.5" fill="${color}" opacity="0.8"/>`;
+            }
+
+            // Ghost Rings (Agentic Structure)
+            html += `<circle cx="50%" cy="50%" r="420" fill="none" stroke="var(--crimson-core)" stroke-width="1.5" stroke-dasharray="10 30" opacity="0.25">
+                <animateTransform attributeName="transform" type="rotate" from="0 50% 50%" to="360 50% 50%" dur="120s" repeatCount="indefinite"/>
+            </circle>`;
+            html += `<circle cx="50%" cy="50%" r="320" fill="none" stroke="var(--gold-pure)" stroke-width="1.5" stroke-dasharray="50 50" opacity="0.25">
+                <animateTransform attributeName="transform" type="rotate" from="360 50% 50%" to="0 50% 50%" dur="90s" repeatCount="indefinite"/>
+            </circle>`;
+
+            svg.innerHTML = html;
+        }
+
+        // --- OBSERVERS FOR FADE-IN ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('section:not(#hero)').forEach(sec => observer.observe(sec));
+
+        // Start
+        initHeroArt();
+    </script>
+</body>
+</html>

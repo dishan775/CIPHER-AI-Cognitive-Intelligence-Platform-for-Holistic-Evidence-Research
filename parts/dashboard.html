@@ -1,0 +1,56 @@
+<!-- DASHBOARD -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo" onclick="toggleSidebar()"><span class="logo-j">J</span><span class="logo-text">ARVIS</span></div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-item active" data-page="home" onclick="switchPage('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+    <a class="sidebar-item" data-page="games" onclick="switchPage('games')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L9 7H5l3 5-3 5h4l3 5 3-5h4l-3-5 3-5h-4z"/></svg><span>Games</span></a>
+    <a class="sidebar-item" data-page="booking" onclick="switchPage('booking')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>Booking</span></a>
+    <a class="sidebar-item" data-page="writing" onclick="switchPage('writing')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg><span>Writing</span></a>
+    <a class="sidebar-item" data-page="memory" onclick="switchPage('memory')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span>Memory</span></a>
+    <a class="sidebar-item" data-page="settings" onclick="switchPage('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>Settings</span></a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="mini-orb"></div>
+    <button class="mic-btn" id="mic-btn" onclick="toggleVoice()">🎤</button>
+    <span class="status-line">JARVIS ACTIVE</span>
+  </div>
+</aside>
+<main class="dash-main">
+  <div class="topbar">
+    <h2 class="topbar-title" id="page-title">COMMAND CENTER</h2>
+    <div class="command-bar"><input type="text" id="command-input" placeholder="Hey Jarvis…" onkeydown="if(event.key==='Enter')routeCommand(this.value)"><span class="kbd">⌘K</span></div>
+    <div class="topbar-right"><div class="avatar">DS</div><button class="notif-bell">🔔</button></div>
+  </div>
+  <!-- HOME PAGE -->
+  <div class="dash-page active" id="page-home">
+    <div class="dash-grid-3">
+      <div class="dash-card live-feed"><div class="card-header"><span class="eyebrow">LIVE ACTIVITY</span><span class="live-dot">● LIVE</span></div><div class="log-container" id="live-log"></div></div>
+      <div class="dash-card"><div class="card-header"><span class="eyebrow">QUICK STATS</span></div><div class="stats-mini"><div class="stat-card"><span class="stat-card-num">47</span><span class="stat-card-label">Commands today</span></div><div class="stat-card"><span class="stat-card-num">12</span><span class="stat-card-label">Games won</span></div><div class="stat-card"><span class="stat-card-num">2,840</span><span class="stat-card-label">Words written</span></div><div class="stat-card"><span class="stat-card-num">3</span><span class="stat-card-label">Bookings made</span></div></div></div>
+      <div class="dash-card"><div class="card-header"><span class="eyebrow">QUICK ACTIONS</span></div><div class="quick-actions"><button class="action-btn" onclick="switchPage('games')">♟ Play Chess</button><button class="action-btn" onclick="switchPage('booking')">✈ Book a Trip</button><button class="action-btn" onclick="switchPage('writing')">✍ Open Editor</button><button class="action-btn" onclick="toggleVoice()">🎤 Voice Mode</button></div></div>
+    </div>
+  </div>
+  <!-- GAMES PAGE -->
+  <div class="dash-page" id="page-games">
+    <h2 class="page-header">GAMES ARENA</h2><span class="eyebrow">CHOOSE YOUR CHALLENGE</span>
+    <div class="games-row">
+      <div class="game-card"><div class="game-icon">♟</div><h3>CHESS</h3><p>Play vs Jarvis AI · 3 modes</p><button class="btn-primary" style="padding:.5rem 1.5rem;font-size:.8rem;margin-top:1rem" onclick="startChess()">PLAY</button></div>
+      <div class="game-card"><div class="game-icon">?</div><h3>TRIVIA</h3><p>Daily challenge · 20 categories</p><button class="btn-primary" style="padding:.5rem 1.5rem;font-size:.8rem;margin-top:1rem">START</button></div>
+      <div class="game-card"><div class="game-icon">⬤</div><h3>CONNECT 4</h3><p>Classic game vs AI or solo</p><button class="btn-primary" style="padding:.5rem 1.5rem;font-size:.8rem;margin-top:1rem">PLAY</button></div>
+    </div>
+    <div class="chess-area" id="chess-area" style="display:none"><div class="chess-board-full" id="chess-board"></div><div class="chess-sidebar"><div class="card-header"><span class="eyebrow">MOVE HISTORY</span></div><div class="move-log" id="move-log"></div><div class="thinking" id="thinking" style="display:none"><span class="gold-dots">Jarvis thinking</span></div></div></div>
+  </div>
+  <!-- BOOKING PAGE -->
+  <div class="dash-page" id="page-booking">
+    <h2 class="page-header">BOOKING AGENT</h2>
+    <div class="voice-prompt"><input type="text" placeholder="Tell Jarvis what to book... 🎤" id="booking-input" onkeydown="if(event.key==='Enter')addBooking()"><div class="waveform" id="waveform"><span></span><span></span><span></span><span></span><span></span></div></div>
+    <div class="bookings-list"><div class="booking-entry"><div class="booking-left"><span class="booking-icon">✈</span><div><strong>Mumbai → Goa</strong><span>14 Jun · IndiGo 6E-305</span></div></div><div class="booking-right"><span class="booking-price">₹4,280</span><span class="booking-status confirmed">Confirmed</span><button class="btn-ghost" style="padding:.3rem .8rem;font-size:.7rem">View</button></div></div><div class="booking-entry"><div class="booking-left"><span class="booking-icon">🍽</span><div><strong>Tamba Restaurant</strong><span>Sat 8pm · 2 guests</span></div></div><div class="booking-right"><span class="booking-status pending">Pending</span><button class="btn-ghost" style="padding:.3rem .8rem;font-size:.7rem">View</button></div></div></div>
+  </div>
+  <!-- WRITING PAGE -->
+  <div class="dash-page" id="page-writing">
+    <h2 class="page-header">WRITING STUDIO</h2>
+    <div class="writing-split"><div class="editor-panel"><div class="editor-toolbar"><button>B</button><button>I</button><button>H1</button><button>≡</button></div><div class="editor-area" contenteditable="true" id="editor-area">The future of artificial intelligence is not about replacing human creativity — it is about amplifying what makes us uniquely human.</div></div><div class="suggestions-panel"><div class="card-header"><span class="eyebrow">AI SUGGESTIONS</span></div><div class="suggestion-card"><p>Consider expanding on the ethical implications of AI-human collaboration in creative fields.</p><div class="suggestion-actions"><button class="btn-primary" style="padding:.3rem 1rem;font-size:.7rem">Accept</button><button class="btn-ghost" style="padding:.3rem 1rem;font-size:.7rem">Dismiss</button></div></div><div class="suggestion-card"><p>Add a transition paragraph connecting this thesis to real-world applications in healthcare and education.</p><div class="suggestion-actions"><button class="btn-primary" style="padding:.3rem 1rem;font-size:.7rem">Accept</button><button class="btn-ghost" style="padding:.3rem 1rem;font-size:.7rem">Dismiss</button></div></div></div></div>
+  </div>
+  <!-- MEMORY & SETTINGS PAGES -->
+  <div class="dash-page" id="page-memory"><h2 class="page-header">MEMORY CORE</h2><div class="dash-card" style="padding:2rem"><p style="color:var(--white-ghost)">Your interaction history, preferences, and learned context are stored here. Jarvis uses this data to personalize every response.</p><div class="memory-items" style="margin-top:1.5rem"><div class="memory-item"><span class="eyebrow">PREFERENCE</span><p>Prefers concise responses over detailed explanations</p></div><div class="memory-item"><span class="eyebrow">CONTEXT</span><p>Currently working on a web development project</p></div><div class="memory-item"><span class="eyebrow">HISTORY</span><p>47 commands processed today · 12 chess games played this week</p></div></div></div></div>
+  <div class="dash-page" id="page-settings"><h2 class="page-header">SETTINGS</h2><div class="dash-card" style="padding:2rem"><div class="setting-row"><span>Voice Language</span><select style="background:var(--black-raised);color:var(--white-soft);border:1px solid var(--black-border);padding:.4rem;border-radius:4px"><option>English (India)</option><option>English (US)</option><option>Hindi</option></select></div><div class="setting-row"><span>Chess Difficulty</span><select style="background:var(--black-raised);color:var(--white-soft);border:1px solid var(--black-border);padding:.4rem;border-radius:4px"><option>Casual</option><option>Intermediate</option><option>Grandmaster</option></select></div><div class="setting-row"><span>TTS Enabled</span><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label></div></div></div>
+</main>
